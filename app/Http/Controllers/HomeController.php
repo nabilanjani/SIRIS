@@ -10,7 +10,8 @@ class HomeController extends Controller
 {
     public function pembimbingAkademikDashboard()
     {
-        return view('pembimbingakademik.dashboard');
+        $user = Auth::user(); // Mengambil data pengguna yang sedang login
+        return view('pembimbingakademik.dashboard', compact('user')); // Mengirim variabel $user ke view
     }
 
     public function mahasiswaDashboard()
