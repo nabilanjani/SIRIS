@@ -13,7 +13,7 @@
         <div class="w-1/5 bg-gradient-to-b from-gray-900 to-gray-800 p-6">
             <div class="text-2xl font-bold mb-8">SIRIS UNDIP</div>
             <nav class="space-y-4">
-                <a href="/pembimbingakademik/dashboard" class="flex items-center space-x-2 text-white-400 hover:text-white py-2 px-4 font-bold hover:font-bold active:font-bold">
+                <a href="/pembimbingakademik/dashboard" class="flex items-center space-x-2 text-white-400 hover:text-white py-2 px-4 font-bold">
                     <i class="fas fa-home"></i>
                     <span>Dashboard</span>
                 </a>
@@ -33,8 +33,6 @@
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>
-
-                <!-- Logout-->
                 <form method="POST" action="{{ route('logout') }}" id="logout-form" style="display: none;">
                     @csrf
                 </form>
@@ -42,7 +40,7 @@
                 class="flex items-center space-x-2 text-gray-400 hover:text-white py-2 px-4" 
                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="fas fa-sign-out-alt"></i>
-                    <span>{{ __('Log Out') }}</span>
+                    <span>Log Out</span>
                 </a>
             </nav>
         </div>
@@ -56,32 +54,25 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <div class="flex items-center space-x-2">
-                        <i class="fas fa-user"></i>
-                        <span>SUTIKNO</span>
+                        <i class="fas fa-user-circle text-xl"></i>
+                        <span>{{ $user->name }}</span>
                     </div>
-                    <i class="fas fa-cog"></i>
-                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-cog text-xl"></i>
+                    <i class="fas fa-bell text-xl"></i>
                 </div>
             </div>
-            <!-- Breadcrumb -->
-            <!-- <div class="text-gray-400 mb-6">HOME / DASHBOARD</div> -->
-            <!-- Dashboard -->
+            <!-- User Info -->
             <div class="bg-gray-700 p-6 rounded-lg mb-6">
                 <div class="flex items-center space-x-4">
                     <div class="w-16 h-16 bg-gray-500 rounded-full"></div>
                     <div>
-                        <div class="text-xl font-bold">SUTIKNO</div>
+                        <div class="text-xl font-bold">{{ $user->name }}</div>
                         <div class="text-gray-400">NIP: 197905242009121003</div>
                         <div class="text-gray-400">LEKTOR | <span class="text-green-400">Informatika S1</span></div>
                     </div>
-                    <div class="ml-auto flex space-x-4">
-                        <button class="bg-green-500 text-white px-4 py-2 rounded-full">Dashboard</button>
-                        <button class="bg-gray-800 text-white px-4 py-2 rounded-full">Biodata</button>
-                        <button class="bg-gray-800 text-white px-4 py-2 rounded-full">Notifikasi</button>
-                    </div>
                 </div>
             </div>
-            <!-- Timeline and Recently Accessed -->
+            <!-- Dashboard Content -->
             <div class="grid grid-cols-2 gap-6">
                 <!-- Timeline -->
                 <div class="bg-gray-700 p-6 rounded-lg">

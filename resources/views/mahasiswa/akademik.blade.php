@@ -6,7 +6,7 @@
         <h2 class="font-semibold text-xl text-white leading-tight flex justify-center items-center">
             {{ __('Pilih Status Akademik') }}
         </h2>
-        <p class="flex justify-center items-center text-white">Silakan pilih salah satu status akademik berikut untuk semester ini kiwww</p>
+        <p class="flex justify-center items-center text-white">Silakan pilih salah satu status akademik berikut untuk semester ini</p>
         <div class="py-12">
             <div class="max-w-full mx-auto sm:px-6 lg:px-8">
                 <div class="flex space-x-4">

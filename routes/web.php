@@ -12,8 +12,6 @@ Route::get('/register', function () {
     return view('auth/register');
 });
 
-
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -46,6 +44,7 @@ Route::get('dekan/dashboard', [HomeController::class, 'dekanDashboard'])
     ->middleware(['auth', 'dekan'])
     ->name('dekan.dashboard');
 
+
     //Perkuliahan
     Route::get('dekan/perkuliahan', function () {
         return view('dekan/perkuliahan'); 
@@ -62,6 +61,17 @@ Route::get('dekan/dashboard', [HomeController::class, 'dekanDashboard'])
             return view('/dekan/persetujuanjadwal');
 });
 
+Route::get('dekan/perkuliahan', function () {
+    return view('dekan/perkuliahan');
+    });
+
+Route::get('dekan/jadwal', function () {
+    return view('dekan/jadwal');
+    });
+
+Route::get('dekan/lihatjadwal', function () {
+    return view('dekan/lihatjadwal');
+    });
 
 //bagian akademik
 Route::get('bagianakademik/dashboard', [HomeController::class, 'bagianakademikDashboard'])
@@ -89,12 +99,6 @@ Route::get('/bagianakademik/aturprodi', function () {
 Route::get('kaprodi/dashboard', [HomeController::class, 'kaprodiDashboard'])
     ->middleware(['auth', 'kaprodi'])
     ->name('kaprodi.dashboard');
-
-Route::get('kaprodi/perkuliahan', function () {
-    return view('kaprodi/perkuliahan');
-});
-
-
 
 //pembimbing akademik
 Route::get('mahasiswa/dashboard', [HomeController::class, 'mahasiswaDashboard'])->name('mahasiswa.dashboard');

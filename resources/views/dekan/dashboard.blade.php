@@ -30,6 +30,19 @@
                     <span>Bimbingan & Ujian</span>
                 </a>
                 <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-white py-2 px-4 active:font-bold">
+                <a href="/dekan/dashboard" class="flex items-center space-x-2 text-white-400 hover:text-white py-2 px-4 font-bold hover:font-bold active:font-bold">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/dekan/perkuliahan" class="flex items-center space-x-2 text-gray-400 hover:text-white py-2 px-4">
+                    <i class="fas fa-edit"></i>
+                    <span>Perkuliahan</span>
+                </a>
+                <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-white py-2 px-4">
+                    <i class="fas fa-book"></i>
+                    <span>Manajemen Wisuda</span>
+                </a>
+                <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-white py-2 px-4">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>
@@ -58,6 +71,7 @@
                     <div class="flex items-center space-x-2">
                         <i class="fas fa-user"></i>
                         <span>KUSWORO ADI</span>
+                        <span>Prof. Dr. Kusworo Adi, S.Si., MT.</span>
                     </div>
                     <i class="fas fa-cog"></i>
                     <i class="fas fa-bell"></i>
@@ -73,6 +87,7 @@
                         <div class="text-xl font-bold">Prof. Dr. Kusworo Adi, S.Si., MT.</div>
                         <div class="text-gray-400">NIP: 197203171998021001</div>
                         <div class="text-gray-400">LEKTOR | <span class="text-green-400">Informatika S1</span></div>
+                        <div class="text-gray-400">DEKAN | <span class="text-green-400">Fakultas Sains dan Matematika</span></div>
                     </div>
                     <div class="ml-auto flex space-x-4">
                         <button class="bg-green-500 text-white px-4 py-2 rounded-full">Dashboard</button>
