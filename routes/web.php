@@ -46,10 +46,44 @@ Route::get('dekan/dashboard', [HomeController::class, 'dekanDashboard'])
     ->middleware(['auth', 'dekan'])
     ->name('dekan.dashboard');
 
+    //Perkuliahan
+    Route::get('dekan/perkuliahan', function () {
+        return view('dekan/perkuliahan'); 
+
+    });
+        //ruangkelas
+        Route::get('/dekan/ruangkelas', function () {
+            return view('/dekan/ruangkelas');
+
+        });
+
+        //persetujuan jadwal
+        Route::get('/dekan/persetujuanjadwal', function () {
+            return view('/dekan/persetujuanjadwal');
+});
+
+
 //bagian akademik
 Route::get('bagianakademik/dashboard', [HomeController::class, 'bagianakademikDashboard'])
-    ->middleware(['auth', 'bagianakademik'])
-    ->name('bagianakademik.dashboard');
+->middleware(['auth', 'bagianakademik'])
+->name('bagianakademik.dashboard');
+
+//Perkuliahan
+Route::get('bagianakademik/perkuliahanba', function () {
+    return view('bagianakademik/perkuliahanba'); 
+});
+
+//atur ruang
+Route::get('/bagianakademik/aturruang', function () {
+    return view('/bagianakademik/aturruang');
+
+});
+
+//atur prodi
+Route::get('/bagianakademik/aturprodi', function () {
+    return view('/bagianakademik/aturprodi');
+
+});
 
 //kaprodi
 Route::get('kaprodi/dashboard', [HomeController::class, 'kaprodiDashboard'])
