@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pembimbing_akademik', function (Blueprint $table) {
-            $table->string('nip', 20)->primary();
+        Schema::create('akademik', function (Blueprint $table) {
+            $table->string('nidn', 20)->primary();
             $table->string('nama', 100)->nullable();
             $table->string('no_hp', 15)->nullable();
             $table->string('email', 100)->nullable();
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pembimbing_akademik');
+        Schema::dropIfExists('akademik');
     }
 };
