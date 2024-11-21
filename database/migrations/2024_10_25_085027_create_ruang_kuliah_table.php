@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('ruang_kuliah', function (Blueprint $table) {
             $table->string('id_ruang', 10)->primary();
             $table->string('nama_ruang', 50)->nullable();
-            $table->string('gedung', 100)->nullable();
         });
     }
 

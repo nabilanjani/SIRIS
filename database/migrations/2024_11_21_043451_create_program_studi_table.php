@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('program_studi', function (Blueprint $table) {
-            $table->id(); // Primary key
-            $table->string('nama')->unique(); // Nama Program Studi
+            $table->id('id_prodi'); // Primary key
+            $table->string('nama_prodi', 20)->unique(); // Nama Program Studi
         });
     }
 

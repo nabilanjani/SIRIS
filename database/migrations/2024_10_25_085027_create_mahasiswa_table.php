@@ -20,9 +20,6 @@ return new class extends Migration
             $table->integer('angkatan')->nullable();
             $table->string('jalur_masuk', 50)->nullable();
             $table->string('status', 20)->nullable();
-            $table->integer('sks_kumulatif')->nullable();
-            $table->float('ipk')->nullable();
-            $table->string('id_prodi', 10)->nullable();
         });
     }
 

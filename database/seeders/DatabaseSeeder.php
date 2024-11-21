@@ -18,6 +18,10 @@ class DatabaseSeeder extends Seeder
             ListUser::class,
             MhsSeeder::class,
             MatKulSeeder::class,
+            AkademikSeeder::class,
+            JadwalSeeder::class,
+            RuangSeeder::class,
+            ProdiSeeder::class,
         ]);
     }
 }
