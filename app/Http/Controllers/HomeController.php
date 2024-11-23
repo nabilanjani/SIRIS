@@ -42,8 +42,9 @@ class HomeController extends Controller
         return view('dekan.dashboard');
     }
 
-    public function bagianAkademikDashboard()
+    public function bagianakademikDashboard()
     {
         return view('bagianakademik.dashboard');
     }
+
 }
