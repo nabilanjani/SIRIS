@@ -12,11 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('akademik', function (Blueprint $table) {
+            $table->unsignedBigInteger('user_id'); // Kolom yang menjadi foreign key
             $table->string('nidn', 20)->primary();
             $table->string('nama', 100)->nullable();
             $table->string('no_hp', 15)->nullable();
             $table->string('email', 100)->nullable();
             $table->string('jabatan', 50)->nullable();
+            
+            //Relasi ke tabel users
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
