@@ -55,7 +55,7 @@
                 <div class="flex items-center space-x-4">
                     <div class="flex items-center space-x-2">
                         <i class="fas fa-user-circle text-xl"></i>
-                        <span>{{ $user->name }}</span>
+                        <span>{{ $user->akademik?->nama}}</span>
                     </div>
                     <i class="fas fa-cog text-xl"></i>
                     <i class="fas fa-bell text-xl"></i>
@@ -66,9 +66,9 @@
                 <div class="flex items-center space-x-4">
                     <div class="w-16 h-16 bg-gray-500 rounded-full"></div>
                     <div>
-                        <div class="text-xl font-bold">{{ $user->name }}</div>
-                        <div class="text-gray-400">NIP: 197905242009121003</div>
-                        <div class="text-gray-400">LEKTOR | <span class="text-green-400">Informatika S1</span></div>
+                        <div class="text-xl font-bold">{{ $user->akademik?->nama }}</div>
+                        <div class="text-gray-400">NIDN: {{ $user->akademik?->nidn }}</div>
+                        <div class="text-gray-400">{{ $user->akademik?->jabatan }} | <span class="text-green-400">Informatika S1</span></div>
                     </div>
                 </div>
             </div>

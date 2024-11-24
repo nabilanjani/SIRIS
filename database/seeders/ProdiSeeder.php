@@ -13,7 +13,13 @@ class ProdiSeeder extends Seeder
     public function run(): void
     {
         DB::table('program_studi')->insert([
-            ['id_prodi' => '1', 'nama_prodi' => 'Informatika'],
+            ['nama_prodi' => 'Informatika'],
+            ['nama_prodi' => 'Statistika'],
+            ['nama_prodi' => 'Biologi'],
+            ['nama_prodi' => 'Fisika'],
+            ['nama_prodi' => 'Kimia'],
+            ['nama_prodi' => 'Bioteknologi'],
+            ['nama_prodi' => 'Matematika'],
         ]);
     }
 }

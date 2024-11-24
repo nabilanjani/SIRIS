@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Perwalian</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
@@ -55,7 +55,7 @@
                 <div class="flex items-center space-x-4">
                     <div class="flex items-center space-x-2">
                         <i class="fas fa-user"></i>
-                        <span>SUTIKNO</span>
+                        <span>{{$user->akademik?->nama ?? 'Tidak ditemukan' }}</span>
                     </div>
                     <i class="fas fa-cog"></i>
                     <i class="fas fa-bell"></i>

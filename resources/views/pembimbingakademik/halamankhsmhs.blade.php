@@ -56,7 +56,7 @@
                 <div class="flex items-center space-x-4">
                     <div class="flex items-center space-x-2">
                         <i class="fas fa-user"></i>
-                        <span>SUTIKNO</span>
+                        <span>{{$user->akademik?->nama ?? 'Tidak ditemukan' }}</span>
                     </div>
                     <i class="fas fa-cog"></i>
                     <i class="fas fa-bell"></i>
