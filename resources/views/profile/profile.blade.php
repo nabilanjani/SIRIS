@@ -53,10 +53,10 @@
                     <i class="fas fa-search absolute top-2 right-4 text-gray-400"></i>
                 </div>
                 <div class="flex items-center space-x-4">
-                <a href="{{ route('profile.edit') }}" class="flex items-center space-x-2 text-white font-bold py-2 px-4 rounded">
-                    <i class="fas fa-user-circle text-xl"></i>
-                    <span>{{ $user->akademik?->nama }}</span>
-                </a>                  
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-user-circle text-xl"></i>
+                        <span>{{ $user->akademik?->nama}}</span>
+                    </div>
                     <i class="fas fa-cog text-xl"></i>
                     <i class="fas fa-bell text-xl"></i>
                 </div>

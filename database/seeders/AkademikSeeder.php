@@ -13,10 +13,10 @@ class AkademikSeeder extends Seeder
     public function run(): void
     {
         DB::table('akademik')->insert([
-            ['user_id' => 2, 'nidn' => '0017037201', 'nama' => 'Prof. Dr. Kusworo Adi, S.Si., M.T', 'no_hp' => '081324567354', 'email' => 'dekan1@gmail.com', 'jabatan' => 'Dekan'],
-            ['user_id' => 3, 'nidn' => '0021111111', 'nama' => 'Awang Kurnia Saputra, S.Kom.', 'no_hp' => '081324567354', 'email' => 'bagianakademik1@gmail.com', 'jabatan' => 'Akademik'],
-            ['user_id' => 4, 'nidn' => '0024057906', 'nama' => 'Dr. Sutikno, S.T., M.Cs.', 'no_hp' => '081324567354', 'email' => 'pembimbingakademik1@gmail.com', 'jabatan' => 'Lektor'],
-            ['user_id' => 5, 'nidn' => '0011087104', 'nama' => 'Dr. Aris Sugiharto, S.Si., M.Kom.', 'no_hp' => '081324567354', 'email' => 'kaprodi1@gmail.com', 'jabatan' => 'Lektor'],
+            ['user_id' => 2, 'nidn' => '0017037201', 'nama' => 'Prof. Dr. Kusworo Adi, S.Si., M.T', 'no_hp' => '081324567354', 'email' => 'dekan1@gmail.com', 'jabatan' => 'Dekan', 'tempat_lahir' => 'Semarang', 'tanggal_lahir' => '1978-10-12', 'alamat' => 'Kandri Pesona Asri'],
+            ['user_id' => 3, 'nidn' => '0021111111', 'nama' => 'Awang Kurnia Saputra, S.Kom.', 'no_hp' => '081324567354', 'email' => 'bagianakademik1@gmail.com', 'jabatan' => 'Akademik', 'tempat_lahir' => 'Semarang', 'tanggal_lahir' => '1978-10-12', 'alamat' => 'Kandri Pesona Asri'],
+            ['user_id' => 4, 'nidn' => '0024057906', 'nama' => 'Dr. Sutikno, S.T., M.Cs.', 'no_hp' => '081324567354', 'email' => 'pembimbingakademik1@gmail.com', 'jabatan' => 'Lektor', 'tempat_lahir' => 'Semarang', 'tanggal_lahir' => '1978-10-12', 'alamat' => 'Kandri Pesona Asri'],
+            ['user_id' => 5, 'nidn' => '0011087104', 'nama' => 'Dr. Aris Sugiharto, S.Si., M.Kom.', 'no_hp' => '081324567354', 'email' => 'kaprodi1@gmail.com', 'jabatan' => 'Lektor', 'tempat_lahir' => 'Semarang', 'tanggal_lahir' => '1978-10-12', 'alamat' => 'Kandri Pesona Asri'],
             
             //['nidn' => '0009038204', 'nama' => 'Dr.Eng. Adi Wibowo, S.Si., M.Kom.', 'no_hp' => '081324567354', 'email' => 'adiwibowo@lecturer.undip.ac.id', 'jabatan' => 'Lektor Kepala'], 
             // ['nidn' => '0627128001', 'nama' => 'Guruh Aryotejo, S.Kom., M.Sc.', 'no_hp' => '081324567354', 'email' => 'guruh@lecturer.undip.ac.id', 'jabatan' => 'Lektor'],
