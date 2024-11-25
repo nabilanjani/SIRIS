@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('no_hp', 15)->nullable();
             $table->string('email', 100)->nullable();
             $table->string('jabatan', 50)->nullable();
+            $table->string('tempat_lahir', 50)->nullable();
+            $table->date('tanggal_lahir')->nullable();
+            $table->text('alamat')->nullable();
             
             //Relasi ke tabel users
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
