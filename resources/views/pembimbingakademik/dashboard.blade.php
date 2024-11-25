@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<body class="bg-gradient-to-b from-gray-800 to-blue-900 text-white font-sans">
+<body class="bg-gradient-to-b from-[#141B46] to-[#3143AC] text-white font-sans">
     <div class="flex h-screen">
         <!-- Sidebar -->
         <div class="w-1/5 bg-gradient-to-b from-gray-900 to-gray-800 p-6">
@@ -53,7 +53,7 @@
                     <i class="fas fa-search absolute top-2 right-4 text-gray-400"></i>
                 </div>
                 <div class="flex items-center space-x-4">
-                <a href="{{ route('profile.edit') }}" class="flex items-center space-x-2 text-white font-bold py-2 px-4 rounded">
+                <a href="{{ route('profile.show') }}" class="flex items-center space-x-2 text-white font-bold py-2 px-4 rounded">
                     <i class="fas fa-user-circle text-xl"></i>
                     <span>{{ $user->akademik?->nama }}</span>
                 </a>                  
@@ -62,20 +62,20 @@
                 </div>
             </div>
             <!-- User Info -->
-            <div class="bg-gray-700 p-6 rounded-lg mb-6">
+            <div class="bg-gradient-to-b from-gray-700 to-gray-500 p-8 rounded-lg mb-6">
                 <div class="flex items-center space-x-4">
                     <div class="w-16 h-16 bg-gray-500 rounded-full"></div>
                     <div>
                         <div class="text-xl font-bold">{{ $user->akademik?->nama }}</div>
-                        <div class="text-gray-400">NIDN: {{ $user->akademik?->nidn }}</div>
-                        <div class="text-gray-400">{{ $user->akademik?->jabatan }} | <span class="text-green-400">Informatika S1</span></div>
+                        <div class="text-gray-300">NIDN: {{ $user->akademik?->nidn }}</div>
+                        <div class="text-gray-300">{{ $user->akademik?->jabatan }} | <span class="text-green-400">Informatika S1</span></div>
                     </div>
                 </div>
             </div>
             <!-- Dashboard Content -->
             <div class="grid grid-cols-2 gap-6">
                 <!-- Timeline -->
-                <div class="bg-gray-700 p-6 rounded-lg">
+                <div class="bg-gradient-to-b from-gray-700 to-gray-500 p-6 rounded-lg">
                     <div class="flex justify-between items-center mb-4">
                         <div class="text-xl font-bold">Timeline</div>
                         <div class="flex space-x-2">
@@ -89,7 +89,7 @@
                     </div>
                 </div>
                 <!-- Recently Accessed -->
-                <div class="bg-gray-700 p-6 rounded-lg">
+                <div class="bg-gradient-to-b from-gray-700 to-gray-500 p-6 rounded-lg">
                     <div class="flex justify-between items-center mb-4">
                         <div class="text-xl font-bold">Recently Accessed</div>
                         <div class="flex space-x-2">
