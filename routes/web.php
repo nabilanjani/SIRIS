@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RuangController;
 
 Route::get('/', function () {
     return view('auth/login');
@@ -84,10 +85,14 @@ Route::get('bagianakademik/perkuliahanba', function () {
 });
 
 //atur ruang
-Route::get('/bagianakademik/aturruang', function () {
-    return view('/bagianakademik/aturruang');
+Route::get('/bagianakademik/aturruang', [RuangController::class, 'ruangtampil']);
 
-});
+Route::post('/ruang/tambah', [RuangController::class, 'tambahruang'])->name('ruang.tambah');
+Route::get('/ruang/data', [RuangController::class, 'getData'])->name('ruang.data');
+Route::delete('/ruang/hapus/{kode_ruang}', [RuangController::class, 'hapusruang'])->name('ruang.hapus');
+Route::put('/ruang/edit/{kode_ruang}', [RuangController::class, 'editruang'])->name('ruang.edit');
+Route::get('/ruang/cari', [RuangController::class, 'cariruang'])->name('ruang.cari');
+
 
 //atur prodi
 Route::get('/bagianakademik/aturprodi', function () {

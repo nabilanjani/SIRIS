@@ -21,6 +21,8 @@ return new class extends Migration
             $table->integer('kuota')->nullable();
             $table->json('id_dosen')->nullable();
         });
+
+        
     }
 
     /**

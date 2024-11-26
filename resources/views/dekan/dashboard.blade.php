@@ -13,22 +13,6 @@
         <div class="w-1/5 bg-gradient-to-b from-gray-900 to-gray-800 p-6">
             <div class="text-2xl font-bold mb-8">SIRIS UNDIP</div>
             <nav class="space-y-4">
-                <a href="/dekan/dashboard" class="flex items-center space-x-2 text-white-400 hover:text-white py-2 px-4 active:font-bold ">
-                    <i class="fas fa-home"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="/dekan/perkuliahan" class="flex items-center space-x-2 text-gray-400 hover:text-white py-2 px-4 active:font-bold">
-                    <i class="fas fa-user-friends"></i>
-                    <span>Perkuliahan</span>
-                </a>
-                <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-white py-2 px-4 active:font-bold">
-                    <i class="fas fa-edit"></i>
-                    <span>Input Nilai</span>
-                </a>
-                <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-white py-2 px-4 active:font-bold">
-                    <i class="fas fa-book"></i>
-                    <span>Bimbingan & Ujian</span>
-                </a>
                 <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-white py-2 px-4 active:font-bold">
                 <a href="/dekan/dashboard" class="flex items-center space-x-2 text-white-400 hover:text-white py-2 px-4 font-bold hover:font-bold active:font-bold">
                     <i class="fas fa-home"></i>
@@ -71,7 +55,6 @@
                     <div class="flex items-center space-x-2">
                         <i class="fas fa-user"></i>
                         <span>KUSWORO ADI</span>
-                        <span>Prof. Dr. Kusworo Adi, S.Si., MT.</span>
                     </div>
                     <i class="fas fa-cog"></i>
                     <i class="fas fa-bell"></i>
