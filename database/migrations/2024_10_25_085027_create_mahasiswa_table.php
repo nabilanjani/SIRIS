@@ -8,10 +8,12 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     * 
      */
     public function up(): void
     {
         Schema::create('mahasiswa', function (Blueprint $table) {
+            $table->integer('user_id')->nullable();
             $table->string('nim', 20)->primary();
             $table->string('nama', 100)->nullable();
             $table->text('alamat')->nullable();
@@ -20,6 +22,8 @@ return new class extends Migration
             $table->integer('angkatan')->nullable();
             $table->string('jalur_masuk', 50)->nullable();
             $table->string('status', 20)->nullable();
+            $table->float('ipk')->nullable();
+            $table->float('ips')->nullable();
         });
     }
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IsiIRSController;
 
 Route::get('/', function () {
     return view('auth/login');
@@ -37,6 +38,9 @@ Route::middleware(['auth', 'mahasiswa'])->group(function () {
     Route::get('mahasiswa/isiirs', function () {
         return view('mahasiswa.isiirs');
     })->name('mahasiswa.isiirs');
+
+    Route::post('irs/tambah', [IsiIRSController::class, 'buatIRS'])->name('irs.tambah');
+
 });
 
 //dekan

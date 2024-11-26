@@ -5,94 +5,68 @@
         </h3>
     </x-slot>
 
-    <body class="bg-gradient-to-r from-blue-900 to-indigo-900 text-white h-screen flex">
-        <div class="flex w-full h-full">
-            {{-- Data Mahasiswa --}}
-            <div class="w-1/4 p-4">
-                <div class="bg-white p-4 rounded-lg mb-4">
-                    <h1 class="text-lg font-semibold mb-2">SIRIS UNDIP</h1>
-                    <p class="text-xs">Nama : NABILA BETARI ANJANI</p>
-                    <p class="text-xs">NIM : 24060122140169</p>
-                    <p class="text-xs">Th. Ajaran : 2024/2025</p>
-                    <p class="text-xs">Ganjil/Genap : GANJIL</p>
-                    <p class="text-xs">Matakuliah prioritas : SMT 4</p>
-                    <p class="text-xs">IPk : 4,00</p>
-                    <p class="text-xs">IPS (semester lalu) : 4,00</p>
-                    <p class="text-xs">Max. Beban SKS (saat ini) : 24</p>
-                </div>
-                <button class="bg-white w-full py-2 rounded-lg mb-4 text-xs">Refresh IRS</button>
-                <button class="bg-white w-full py-2 rounded-lg mb-4 text-xs">Cari Mata Kuliah</button>
-                <button class="bg-white w-full py-2 rounded-lg text-xs">Mata Kuliah Terpilih</button>
-            </div>
-
-            {{-- Main Content Jadwal --}}
-            <div class="w-3/4 p-4">
-                <div class="bg-gray-700 p-4 rounded-lg">
-                    <div class="grid grid-cols-6 gap-2 text-left text-gray-300 text-xs">
-                        <div>Waktu</div>
-                        <div>Senin</div>
-                        <div>Selasa</div>
-                        <div>Rabu</div>
-                        <div>Kamis</div>
-                        <div>Jumat</div>
-                    </div>
-                    <!-- The timetable content goes here -->
-                    <div class="grid grid-cols-6 gap-2 mt-2 text-left text-gray-300 text-xs">
-                        <div>06.00</div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-                    <div class="grid grid-cols-6 gap-2 mt-2 text-left text-gray-300 text-xs">
-                        <div>07.00</div>
-                        <div class="bg-yellow-400 text-black p-2 rounded-lg">
-                            <p>Teori Bahasa dan Otomata</p>
-                            <p>WAJIB (KM2020)</p>
-                            <p>(SMT 7) (3 SKS)</p>
-                            <p>Kelas: C 3/3 SKS</p>
-                            <p>07:00 - 09:30</p>
-                        </div>
-                        <div></div>
-                        <div class="bg-blue-900 p-2 rounded-lg">
-                            <p>Komputasi Tersebar dan Paralel</p>
-                            <p>WAJIB (KM2020)</p>
-                            <p>(SMT 5) (3 SKS)</p>
-                            <p>Kelas: C 3/3 SKS</p>
-                            <p>07:00 - 09:30</p>
-                        </div>
-                        <div class="bg-blue-900 p-2 rounded-lg">
-                            <p>Proyek Perangkat Lunak</p>
-                            <p>WAJIB (KM2020)</p>
-                            <p>(SMT 5) (3 SKS)</p>
-                            <p>Kelas: C 3/3 SKS</p>
-                            <p>07:00 - 09:30</p>
-                        </div>
-                        <div class="bg-blue-900 p-2 rounded-lg">
-                            <p>Sistem Informasi</p>
-                            <p>WAJIB (KM2020)</p>
-                            <p>(SMT 5) (3 SKS)</p>
-                            <p>Kelas: C 3/3 SKS</p>
-                            <p>07:00 - 09:30</p>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-6 gap-2 mt-2 text-left text-gray-300 text-xs">
-                        <div>08.00</div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div class="bg-blue-900 p-2 rounded-lg">
-                            <p>Pengembangan Berbasis Proyek</p>
-                            <p>WAJIB (KM2020)</p>
-                            <p>(SMT 5) (3 SKS)</p>
-                            <p>Kelas: C 3/3 SKS</p>
-                            <p>07:00 - 09:30</p>
-                        </div>
-                        <div></div>
-                    </div>
-                </div>
+    <div class="flex w-full h-full">
+        {{-- Sidebar Data Mahasiswa --}}
+        <div class="w-1/4 p-4">
+            <div class="bg-white p-4 rounded-lg mb-4">
+                <h1 class="text-lg font-semibold mb-2">SIRIS UNDIP</h1>
+                <p class="text-xs">Nama : {{ auth()->user()->mahasiswa->nama }}</p>
+                <p class="text-xs">NIM : {{ auth()->user()->mahasiswa->nim }}</p>
+                <p class="text-xs">IPK : {{ auth()->user()->mahasiswa->ipk }}</p>
+                <p class="text-xs">IPS : {{ auth()->user()->mahasiswa->ips }}</p>
             </div>
         </div>
-    </body>
+
+        {{-- Main Content --}}
+        <div class="w-3/4 p-4">
+            {{-- Notifikasi --}}
+            @if (session('success'))
+                <div class="bg-green-500 text-white p-4 rounded mb-4">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="bg-red-500 text-white p-4 rounded mb-4">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            {{-- Daftar Mata Kuliah --}}
+            <div class="bg-gray-700 p-4 rounded-lg">
+                <h2 class="text-white text-lg mb-4">Daftar Mata Kuliah</h2>
+                <table class="table-auto w-full text-gray-300 text-sm">
+                    <thead>
+                        <tr>
+                            <th class="border px-4 py-2">Kode MK</th>
+                            <th class="border px-4 py-2">Nama</th>
+                            <th class="border px-4 py-2">Semester</th>
+                            <th class="border px-4 py-2">SKS</th>
+                            <th class="border px-4 py-2">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($mataKuliah as $mk)
+                            <tr>
+                                <td class="border px-4 py-2">{{ $mk->kodemk }}</td>
+                                <td class="border px-4 py-2">{{ $mk->nama }}</td>
+                                <td class="border px-4 py-2">{{ $mk->semester }}</td>
+                                <td class="border px-4 py-2">{{ $mk->sks }}</td>
+                                <td class="border px-4 py-2">
+                                    <form action="{{ route('irs.tambah') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="nim" value="{{ auth()->user()->mahasiswa->nim }}">
+                                        <input type="hidden" name="kodemk" value="{{ $mk->kodemk }}">
+                                        <button type="submit" class="bg-yellow-500 px-4 py-2 rounded hover:bg-yellow-600">
+                                            Tambah
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </x-app-layout>

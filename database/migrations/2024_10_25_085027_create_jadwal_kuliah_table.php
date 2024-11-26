@@ -14,8 +14,14 @@ return new class extends Migration
         Schema::create('jadwal_kuliah', function (Blueprint $table) {
             $table->string('id_jadwal', 20)->primary();
             $table->string('hari', 20)->nullable();
-            $table->string('waktu', 20)->nullable();
+            $table->string('jam_mulai', 20)->nullable();
+            $table->string('jam_selesai', 20)->nullable();
             $table->string('kelas', 10)->nullable();
+            
+            // Foreign Key
+            $table->string('kodemk', 20);
+            $table->foreign('kodemk')->references('kodemk')->on('mata_kuliah')->onDelete('cascade');
+            
         });
     }
 
