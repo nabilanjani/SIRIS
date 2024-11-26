@@ -23,6 +23,8 @@ return new class extends Migration
             $table->foreign('kodemk')->references('kodemk')->on('mata_kuliah')->onDelete('cascade');
             
         });
+
+        
     }
 
     /**
