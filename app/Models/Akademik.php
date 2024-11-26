@@ -15,8 +15,5 @@ class Akademik extends Model
         'email',
         'jabatan',
     ];
-    public function user(){
-        return $this->belongsTo(User::class);
-    }
     
 }

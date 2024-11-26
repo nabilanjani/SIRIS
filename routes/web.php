@@ -3,7 +3,6 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\IsiIRSController;
 
 Route::get('/', function () {
     return view('auth/login');
@@ -14,7 +13,8 @@ Route::get('/register', function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
@@ -39,7 +39,7 @@ Route::middleware(['auth', 'mahasiswa'])->group(function () {
         return view('mahasiswa.isiirs');
     })->name('mahasiswa.isiirs');
 
-    Route::post('irs/tambah', [IsiIRSController::class, 'buatIRS'])->name('irs.tambah');
+    //Route::post('irs/tambah', [IsiIRSController::class, 'buatIRS'])->name('irs.tambah');
 
 });
 
@@ -104,27 +104,7 @@ Route::get('kaprodi/dashboard', [HomeController::class, 'kaprodiDashboard'])
     ->middleware(['auth', 'kaprodi'])
     ->name('kaprodi.dashboard');
 
-//pembimbing akademik
-Route::get('mahasiswa/dashboard', [HomeController::class, 'mahasiswaDashboard'])->name('mahasiswa.dashboard');
-Route::get('pembimbingakademik/dashboard', [HomeController::class, 'pembimbingAkademikDashboard'])->name('pembimbingakademik.dashboard');
-Route::get('pembimbingakademik/perwalian', function () {
-    return view('pembimbingakademik/perwalian');
-});
-
-Route::get('pembimbingakademik/halamanrevie', function () {
-    return view('pembimbingakademik/halamanrevie');
-});
-
-Route::get('pembimbingakademik/halamanirsmhs', function () {
-    return view('pembimbingakademik/halamanirsmhs');
-});
-
-Route::get('pembimbingakademik/halamankhsmhs', function () {
-    return view('pembimbingakademik/halamankhsmhs');
-});
-
-Route::get('pembimbingakademik/halamantranskripmhs', function () {
-    return view('pembimbingakademik/halamantranskripmhs');
-});
+// Pembimbing Akademik routes
+    
 
 require __DIR__.'/auth.php';

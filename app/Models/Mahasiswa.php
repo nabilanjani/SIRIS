@@ -24,10 +24,4 @@ class Mahasiswa extends Model
     public function user(){
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
-    public function irs(){
-        return $this->hasMany(IRS::class, 'nim', 'nim');
-    }
-    public function khs(){
-        return $this->hasMany(KHS::class, 'nim', 'nim');
-    }
 }

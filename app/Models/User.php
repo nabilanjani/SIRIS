@@ -49,5 +49,8 @@ class User extends Authenticatable
     }
     public function akademik(){
         return $this->hasOne(Akademik::class, 'id');
+
+    
     }
+    
 }
