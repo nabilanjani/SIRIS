@@ -2,11 +2,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Perwalian</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<body class="bg-gradient-to-b from-gray-800 to-blue-900 text-white font-sans">
+<body class="bg-gradient-to-b from-[#141B46] to-[#3143AC] text-white font-sans">
     <div class="flex h-screen">
         <!-- Sidebar -->
         <div class="w-1/5 bg-gradient-to-b from-gray-900 to-gray-800 p-6">
@@ -53,10 +53,10 @@
                     <i class="fas fa-search absolute top-2 right-4 text-gray-400"></i>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <div class="flex items-center space-x-2">
-                        <i class="fas fa-user"></i>
-                        <span>SUTIKNO</span>
-                    </div>
+                    <a href="{{ route('profile.show') }}" class="flex items-center space-x-2 text-white font-bold py-2 px-4 rounded">
+                        <i class="fas fa-user-circle text-xl"></i>
+                        <span>{{ $user->akademik?->nama }}</span>
+                    </a> 
                     <i class="fas fa-cog"></i>
                     <i class="fas fa-bell"></i>
                 </div>
@@ -85,7 +85,7 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4 h-64 overflow-y-auto">
-                    <div class="bg-gray-700 p-6 rounded-lg">
+                    <div class="bg-gradient-to-b from-gray-700 to-gray-500 p-6 rounded-lg">
                         <div class="flex justify-between items-center mb-4">
                             <button class="bg-gray-800 text-white px-4 py-2 rounded-full">All</button>
                             <button class="bg-gray-800 text-white px-4 py-2 rounded-full">Sort by dates <i class="fas fa-chevron-down"></i></button>
@@ -95,7 +95,7 @@
                             <div class="text-gray-400">No activities require action</div>
                         </div>
                     </div>
-                    <div class="bg-gray-700 p-6 rounded-lg">
+                    <div class="bg-gradient-to-b from-gray-700 to-gray-500 p-6 rounded-lg">
                         <div class="flex justify-between items-center mb-4">
                             <button class="bg-gray-800 text-white px-4 py-2 rounded-full">All</button>
                             <button class="bg-gray-800 text-white px-4 py-2 rounded-full">Sort by dates <i class="fas fa-chevron-down"></i></button>
