@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('status', 20)->nullable();
             $table->float('ipk')->nullable();
             $table->float('ips')->nullable();
-        });
+
             $table->unsignedBigInteger('doswal');
         
             // Relasi ke tabel users dan akademik
