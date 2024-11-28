@@ -13,11 +13,11 @@
         <div class="w-1/5 bg-gradient-to-b from-gray-900 to-gray-800 p-6">
             <div class="text-2xl font-bold mb-8">SIRIS UNDIP</div>
             <nav class="space-y-4">
-                <a href="/dekan/dashboard" class="flex items-center space-x-2 text-gray-400 hover:text-white py-2 px-4 font-bold hover:font-bold">
+                <a href="/bagianakademik/dashboard" class="flex items-center space-x-2 text-gray-400 hover:text-white py-2 px-4 font-bold hover:font-bold">
                     <i class="fas fa-home"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="/dekan/perkuliahan" class="flex items-center space-x-2 text-white-400 hover:text-white py-2 px-4 font-bold hover:font-bold">
+                <a href="/bagianakademik/perkuliahanba" class="flex items-center space-x-2 text-white-400 hover:text-white py-2 px-4 font-bold hover:font-bold">
                     <i class="fas fa-user-friends"></i>
                     <span>Perkuliahan</span>
                 </a>
@@ -58,7 +58,7 @@
                 <div class="flex items-center space-x-4">
                     <div class="flex items-center space-x-2">
                         <i class="fas fa-user"></i>
-                        <span>KUSWORO ADI</span>
+                        <span>AHMAD BRIAN</span>
                     </div>
                     <i class="fas fa-cog"></i>
                     <i class="fas fa-bell"></i>
@@ -74,14 +74,8 @@
             <div class="mb-6">
                 <div class="flex space-x-4 mb-4">
                     <div>
-                        <label for="departemen" class="block text-gray-300">Departemen</label>
-                        <select id="departemen" class="bg-gray-700 text-white rounded px-4 py-2">
-                            <option>Informatika</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="prodi" class="block text-gray-300">Prodi</label>
-                        <select id="prodi" class="bg-gray-700 text-white rounded px-4 py-2">
+                        <label for="programstudi" class="block text-gray-300">Program Studi</label>
+                        <select id="programstudi" class="bg-gray-700 text-white rounded px-4 py-2">
                             <option>S1 Informatika</option>
                         </select>
                     </div>

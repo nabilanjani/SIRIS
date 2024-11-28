@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('program_studi', function (Blueprint $table) {
-            $table->bigIncrements('id_prodi'); // Primary key
-            $table->string('nama_prodi', 20)->unique(); // Nama Program Studi
+        Schema::create('prodi', function (Blueprint $table) {
+            $table->id('id_prodi', 20)->primary();
+            $table->string('nama', 100);
+            $table->timestamps();
         });
     }
 
@@ -22,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('program_studi');
+        Schema::dropIfExists('prodi');
     }
 };

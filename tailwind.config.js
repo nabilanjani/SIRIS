@@ -7,7 +7,7 @@ export default {
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
-        "./node_modules/flowbite/**/*.js",
+        './node_modules/flowbite/**/*.js',
     ],
 
     theme: {
@@ -15,10 +15,17 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            display: {
+                // Custom display class untuk modal
+                'show': 'flex',
+                'hide': 'none',
+            },
+            // Optional: Anda juga dapat menambahkan animasi atau konfigurasi tambahan lainnya
         },
     },
 
-    plugins: [forms, 
-        require('flowbite/plugin')
+    plugins: [
+        forms,
+        require('flowbite/plugin'),
     ],
 };
