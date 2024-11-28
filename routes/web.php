@@ -113,6 +113,28 @@ Route::get('kaprodi/dashboard', [HomeController::class, 'kaprodiDashboard'])
     ->name('kaprodi.dashboard');
 
 // Pembimbing Akademik routes
+Route::prefix('pembimbingakademik')->group(function () {
+    Route::get('/dashboard', [PembimbingAkademikController::class, 'dashboard'])
+        ->name('pembimbingakademik.dashboard');
+
+    Route::get('/perwalian', [PembimbingAkademikController::class, 'perwalian'])
+        ->name('pembimbingakademik.perwalian');
+    
+    Route::get('/halamanrevie', [PembimbingAkademikController::class, 'halamanRevie'])
+        ->name('pembimbingakademik.halamanrevie');
+    
+    Route::get('/halamanirsmhs', [PembimbingAkademikController::class, 'halamanIrsMhs'])
+        ->name('pembimbingakademik.halamanirsmhs');
+    
+    Route::get('/halamankhsmhs', [PembimbingAkademikController::class, 'halamanKhsMhs'])
+        ->name('pembimbingakademik.halamankhsmhs');
+    
+    Route::get('/halamantranskripmhs', [PembimbingAkademikController::class, 'halamanTranskripMhs'])
+        ->name('pembimbingakademik.halamantranskripmhs');
+    
+    Route::get('/perwalian/{user}', [PembimbingAkademikController::class, 'detailPerwalian'])
+        ->name('pembimbingakademik.perwalian.detail');
+});
     
 
 require __DIR__.'/auth.php';
