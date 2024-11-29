@@ -66,29 +66,34 @@
             <!-- Content -->
             <div>
                 <!-- <h1 class="text-2xl font-bold mb-4">Review IRS Mahasiswa</h1> -->
+            <form method="GET" action="{{ route('pembimbingakademik.halamanrevie') }}">
                 <div class="mb-4">
                     <div class="mb-4 flex items-center">
                         <span class="mr-2 w-24">Angkatan :</span>
-                        <select class="p-2 rounded bg-gray-700 text-gray-300 w-60">
-                            <option>2017</option>
-                            <option>2018</option>
-                            <option>2019</option>
-                            <option>2020</option>
-                            <option>2021</option>
-                            <option>2022</option>
-                            <option>2023</option>
-                            <option>2024</option>
+                        <select name="angkatan" class="p-2 rounded bg-gray-700 text-gray-300 w-60">
+                            <option value="">--- Pilih Angkatan ---</option>
+                            @for($year = 2017; $year <= 2024; $year++)
+                                <option value="{{ $year }}" {{ request('angkatan') == $year ? 'selected' : '' }}>
+                                    {{ $year }}
+                                </option>
+                            @endfor
                         </select>
                     </div>
                     <div class="mb-4 flex items-center">
                         <span class="mr-2 w-24">Prodi :</span>
-                        <select class="p-2 rounded bg-gray-700 text-gray-300 w-60">
-                            <option>Informatika S1</option>
+                        <select name="prodi" class="p-2 rounded bg-gray-700 text-gray-300 w-60">
+                            <option value="">--- Pilih Prodi ---</option>
+                            @foreach($prodi as $p)
+                                <option value="{{ $p->id_prodi }}" {{ request('prodi') == $p->id_prodi ? 'selected' : '' }}>
+                                    {{ $p->nama }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
-                    <button class="mb-2 px-4 py-2 bg-blue-600 rounded text-white">Filter Data</button>
-                    <button class="px-4 py-2 bg-gray-600 rounded text-white">Reset Filter</button>
+                    <button type="submit" class="mb-2 px-4 py-2 bg-blue-600 rounded text-white">Filter Data</button>
+                    <a href="{{ route('pembimbingakademik.resetFilter') }}" class="px-4 py-2 bg-gray-600 rounded text-white">Reset Filter</a>
                 </div>
+            </form>
                 <div class="flex space-x-4 mb-4">
                     <button class="bg-red-500 text-white px-4 py-2 rounded">Belum IRS <br><strong>12</strong></button>
                     <button class="bg-yellow-500 text-white px-4 py-2 rounded">IRS Belum Disetujui<br><strong>12</strong></button>

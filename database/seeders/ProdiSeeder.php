@@ -12,14 +12,14 @@ class ProdiSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('program_studi')->insert([
-            ['nama_prodi' => 'Informatika'],
-            ['nama_prodi' => 'Statistika'],
-            ['nama_prodi' => 'Biologi'],
-            ['nama_prodi' => 'Fisika'],
-            ['nama_prodi' => 'Kimia'],
-            ['nama_prodi' => 'Bioteknologi'],
-            ['nama_prodi' => 'Matematika'],
+        DB::table('prodi')->insert([
+            ['nama' => 'Informatika'],
+            ['nama' => 'Statistika'],
+            ['nama' => 'Biologi'],
+            ['nama' => 'Fisika'],
+            ['nama' => 'Kimia'],
+            ['nama' => 'Bioteknologi'],
+            ['nama' => 'Matematika'],
         ]);
     }
 }

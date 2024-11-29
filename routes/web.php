@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RuangController;
 use App\Http\Controllers\PembimbingAkademikController;
-
+use App\Http\Controllers\JadwalController;
 
 Route::get('/', function () {
     return view('auth/login');
@@ -111,6 +111,26 @@ Route::get('kaprodi/dashboard', [HomeController::class, 'kaprodiDashboard'])
     ->middleware(['auth', 'kaprodi'])
     ->name('kaprodi.dashboard');
 
+    Route::get('kaprodi/perkuliahan', function () {
+        return view('kaprodi/perkuliahan');
+    });
+
+Route::get('kaprodi/jadwal', function () {
+    return view('kaprodi/jadwal');
+});
+    
+Route::get('kaprodi/buatjadwalbaru', function () {
+    return view('kaprodi/buatjadwalbaru');
+});
+    
+Route::get('kaprodi/formjadwal', function () {
+    return view('kaprodi/formjadwal');
+});
+
+Route::get('kaprodi/createjadwal', [JadwalController::class, 'create'])->name('createjadwal');
+
+Route::post('kaprodi/storejadwal', [JadwalController::class, 'store'])->name('storejadwal');
+
 //pa
 Route::middleware(['auth', 'pembimbingakademik'])->group(function () {
     // Dashboard PA
@@ -126,6 +146,7 @@ Route::middleware(['auth', 'pembimbingakademik'])->group(function () {
         ->name('pembimbingakademik.halamankhsmhs');
     Route::get('/pembimbingakademik/halamantranskripmhs', [PembimbingAkademikController::class, 'halamantranskripmhs'])
         ->name('pembimbingakademik.halamantranskripmhs');
+    Route::get('/reset-filter', [PembimbingAkademikController::class, 'resetFilter'])->name('pembimbingakademik.resetFilter');
 });
 
 require __DIR__.'/auth.php';

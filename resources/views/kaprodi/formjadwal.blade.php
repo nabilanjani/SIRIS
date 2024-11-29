@@ -161,6 +161,9 @@
                         <span>Mata kuliah</span>
                         <select class="bg-gray-700 text-white rounded px-2 py-1">
                             <option>Pilih Matkul</option>
+                            @foreach ($mata_kuliah as $matkul)
+                                <option value="{{ $matkul->kodemk }}">{{ $matkul->nama }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="flex justify-between">

@@ -67,7 +67,7 @@
                 <div class="flex items-center space-x-4">
                     <div class="flex items-center space-x-2">
                         <i class="fas fa-user"></i>
-                        <span>ARIS SUGIHARTO</span>
+                        <span>{{ $user->name }}</span>
                     </div>
                     <i class="fas fa-cog"></i>
                     <i class="fas fa-bell"></i>
@@ -83,7 +83,7 @@
                 <div class="flex items-center">
                     <div class="w-16 h-16 bg-gray-600  rounded-full mr-4"></div>
                     <div>
-                        <h2 class="text-xl font-bold">Dr. Aris Sugiharto, S.Si., M.Kom.</h2>
+                        <span class="text-xl font-bold">{{ $user->name }}</span>
                         <p>NIP : 197108111997021004</p>
                         <p>KAPRODI | <span class="text-green-400">Informatika S1</span></p>
                     </div>
