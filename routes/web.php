@@ -4,7 +4,6 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RuangController;
-
 use App\Http\Controllers\PembimbingAkademikController;
 
 
@@ -112,7 +111,21 @@ Route::get('kaprodi/dashboard', [HomeController::class, 'kaprodiDashboard'])
     ->middleware(['auth', 'kaprodi'])
     ->name('kaprodi.dashboard');
 
-// Pembimbing Akademik routes
-    
+//pa
+Route::middleware(['auth', 'pembimbingakademik'])->group(function () {
+    // Dashboard PA
+    Route::get('/pembimbingakademik/dashboard', [PembimbingAkademikController::class, 'dashboard'])
+        ->name('pembimbingakademik.dashboard');
+    Route::get('/pembimbingakademik/perwalian', [PembimbingAkademikController::class, 'perwalian'])
+        ->name('pembimbingakademik.perwalian');
+    Route::get('/pembimbingakademik/halamanrevie', [PembimbingAkademikController::class, 'halamanrevie'])
+        ->name('pembimbingakademik.halamanrevie');
+    Route::get('/pembimbingakademik/halamanirsmhs', [PembimbingAkademikController::class, 'halamanirsmhs'])
+        ->name('pembimbingakademik.halamanirsmhs');
+    Route::get('/pembimbingakademik/halamankhsmhs', [PembimbingAkademikController::class, 'halamankhsmhs'])
+        ->name('pembimbingakademik.halamankhsmhs');
+    Route::get('/pembimbingakademik/halamantranskripmhs', [PembimbingAkademikController::class, 'halamantranskripmhs'])
+        ->name('pembimbingakademik.halamantranskripmhs');
+});
 
 require __DIR__.'/auth.php';

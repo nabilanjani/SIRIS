@@ -15,7 +15,7 @@ class PembimbingAkademikController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
-        $user->load('akademik');
+        $user->load('akademik');    
         return view('pembimbingakademik.dashboard', compact('user'));
     }
 

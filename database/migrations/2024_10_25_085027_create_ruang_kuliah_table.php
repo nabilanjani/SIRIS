@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('kapasitas', 10)->nullable();
             $table->string('status', 1)->nullable();
 
-            $table->string('id_ruang', 10)->primary();
+            // $table->string('id_ruang', 10)->primary();
             $table->string('nama_ruang', 50)->nullable();
 
         });

@@ -8,11 +8,11 @@ use App\Models\User;
 
 class HomeController extends Controller
 {
-    public function pembimbingAkademikDashboard()
-    {
-        $user = Auth::user(); // Mengambil data pengguna yang sedang login
-        return view('pembimbingakademik.dashboard', compact('user')); // Mengirim variabel $user ke view
-    }
+    // public function pembimbingAkademikDashboard()
+    // {
+    //     $user = Auth::user();
+    //     return view('pembimbingakademik.dashboard');
+    // }
 
     public function mahasiswaDashboard()
     {
