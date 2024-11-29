@@ -47,10 +47,9 @@ class User extends Authenticatable
     public function mahasiswa(){
         return $this->hasOne(Mahasiswa::class, 'user_id', 'id');
     }
-    public function akademik(){
-        return $this->hasOne(Akademik::class, 'id');
-
-    
+    public function akademik()
+    {
+        return $this->hasOne(Akademik::class, 'user_id', 'id'); // Sesuaikan kolom foreign key
     }
     
 }

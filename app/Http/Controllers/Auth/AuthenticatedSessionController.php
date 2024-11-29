@@ -27,6 +27,7 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+        error_log("Sini");
         if($request->user()->usertype === 'pembimbingakademik')
         {
             return redirect('pembimbingakademik/dashboard');

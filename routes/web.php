@@ -4,7 +4,6 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RuangController;
-
 use App\Http\Controllers\PembimbingAkademikController;
 
 
@@ -112,29 +111,21 @@ Route::get('kaprodi/dashboard', [HomeController::class, 'kaprodiDashboard'])
     ->middleware(['auth', 'kaprodi'])
     ->name('kaprodi.dashboard');
 
-// Pembimbing Akademik routes
-Route::prefix('pembimbingakademik')->group(function () {
-    Route::get('/dashboard', [PembimbingAkademikController::class, 'dashboard'])
+//pa
+Route::middleware(['auth', 'pembimbingakademik'])->group(function () {
+    // Dashboard PA
+    Route::get('/pembimbingakademik/dashboard', [PembimbingAkademikController::class, 'dashboard'])
         ->name('pembimbingakademik.dashboard');
-
-    Route::get('/perwalian', [PembimbingAkademikController::class, 'perwalian'])
+    Route::get('/pembimbingakademik/perwalian', [PembimbingAkademikController::class, 'perwalian'])
         ->name('pembimbingakademik.perwalian');
-    
-    Route::get('/halamanrevie', [PembimbingAkademikController::class, 'halamanRevie'])
+    Route::get('/pembimbingakademik/halamanrevie', [PembimbingAkademikController::class, 'halamanrevie'])
         ->name('pembimbingakademik.halamanrevie');
-    
-    Route::get('/halamanirsmhs', [PembimbingAkademikController::class, 'halamanIrsMhs'])
+    Route::get('/pembimbingakademik/halamanirsmhs', [PembimbingAkademikController::class, 'halamanirsmhs'])
         ->name('pembimbingakademik.halamanirsmhs');
-    
-    Route::get('/halamankhsmhs', [PembimbingAkademikController::class, 'halamanKhsMhs'])
+    Route::get('/pembimbingakademik/halamankhsmhs', [PembimbingAkademikController::class, 'halamankhsmhs'])
         ->name('pembimbingakademik.halamankhsmhs');
-    
-    Route::get('/halamantranskripmhs', [PembimbingAkademikController::class, 'halamanTranskripMhs'])
+    Route::get('/pembimbingakademik/halamantranskripmhs', [PembimbingAkademikController::class, 'halamantranskripmhs'])
         ->name('pembimbingakademik.halamantranskripmhs');
-    
-    Route::get('/perwalian/{user}', [PembimbingAkademikController::class, 'detailPerwalian'])
-        ->name('pembimbingakademik.perwalian.detail');
 });
-    
 
 require __DIR__.'/auth.php';
