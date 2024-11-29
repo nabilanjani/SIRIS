@@ -113,6 +113,9 @@
                     <span class="text-white">:</span>
                     <select class="bg-gray-600 text-white rounded px-2 py-1">
                         <option>Pilih Matkul</option>
+                        @foreach ($mata_kuliah as $matkul)
+                                <option value="{{ $matkul->kodemk }}">{{ $matkul->nama }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="grid grid-cols-3 gap-4 items-center">

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Models\prodi;
+use App\Models\User;
 
 class PembimbingAkademikController extends Controller
 {
@@ -26,11 +29,36 @@ class PembimbingAkademikController extends Controller
         return view('pembimbingakademik.perwalian', compact('user'));
     }
 
-    public function halamanRevie()
+    public function halamanRevie(Request $request)
+{
+    $user = Auth::user();
+    $user->load('akademik');
+
+    // Inisialisasi query
+    $query = User::query();
+
+    // Filter angkatan
+    if ($request->filled('angkatan')) {
+        $query->where('angkatan', $request->angkatan);
+    }
+
+    // Filter prodi
+    if ($request->filled('prodi')) {
+        $query->where('id_prodi', $request->prodi);
+    }
+
+    // Ambil data prodi untuk dropdown
+    $prodi = DB::table('prodi')->select('id_prodi', 'nama')->get();
+
+    // Eksekusi query
+    $data = $query->get();
+
+    return view('pembimbingakademik.halamanrevie', compact('user', 'prodi', 'data'));
+} 
+
+        public function resetFilter()
     {
-        $user = Auth::user();
-        $user->load('akademik');
-        return view('pembimbingakademik.halamanrevie', compact('user'));
+        return redirect()->route('pembimbingakademik.halamanrevie');
     }
 
     public function halamanIrsMhs()
@@ -52,12 +80,5 @@ class PembimbingAkademikController extends Controller
         $user = Auth::user();
         $user->load('akademik');
         return view('pembimbingakademik.halamantranskripmhs', compact('user'));
-    }
-
-    public function detailPerwalian($user)
-    {
-        $user = Auth::user();
-        $user->load('akademik');
-        return view('pembimbingakademik.perwalian.detail', compact('user'));
     }
 }
