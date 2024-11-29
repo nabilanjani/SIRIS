@@ -13,13 +13,10 @@ return new class extends Migration
     {
         Schema::create('ruang_kuliah', function (Blueprint $table) {
 
-            $table->id('id_ruang', 20);
             $table->string('kode_ruang', 10)->unique();
             $table->string('jenis_ruang', 50)->nullable();
             $table->string('kapasitas', 10)->nullable();
             $table->string('status', 1)->nullable();
-
-            // $table->string('id_ruang', 10)->primary();
             $table->string('nama_ruang', 50)->nullable();
 
         });
