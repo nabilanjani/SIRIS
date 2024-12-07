@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class KHS extends Model
 {
     use HasFactory;
+    protected $table = 'khs';
+
 }

@@ -19,7 +19,7 @@
                     </div>
     
                     <div class="bg-gradient-to-r from-gray-400 to-gray-500 overflow-hidden shadow-sm sm:rounded-lg w-full h-80 flex justify-center items-center">
-                        <a href="/mahasiswa/isiirs">
+                        <a href="/mahasiswa/irs">
                         <div class="p-4 text-white text-3xl">
                             {{ __("Buat IRS") }}
                         </div>

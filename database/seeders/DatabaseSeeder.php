@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
             JadwalSeeder::class,
             RuangKuliahSeeder::class,
             ProdiSeeder::class,
+            // irsSeeder::class,
+            khsSeeder::class
         ]);
     }
 }
