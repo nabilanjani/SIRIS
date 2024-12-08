@@ -26,47 +26,24 @@ class PembimbingAkademikController extends Controller
         return view('pembimbingakademik.perwalian', compact('user'));
     }
 
-    public function halamanRevie(Request $request)
+        public function halamanRevie(Request $request)
     {
         $user = Auth::user();
         $user->load('akademik');
-
-        $query = Mahasiswa::with('irs');
-    
+        
+        $query = Mahasiswa::with('irs'); 
+        
+        $prodi = DB::table('prodi')->select('nama')->get();
+        
         if ($request->filled('angkatan')) {
             $query->where('angkatan', $request->angkatan);
         }
+        
         if ($request->filled('prodi')) {
             $query->where('jurusan', $request->prodi);
         }
-        if ($request->filled('status_irs')) {
-            switch ($request->status_irs) {
-                case 'belum_irs':
-                    $query->whereDoesntHave('irs');
-                    break;
-                case 'belum_disetujui':
-                    $query->whereHas('irs', function($q) {
-                        $q->where('status', 'pending');
-                    });
-                    break;
-                case 'sudah_disetujui':
-                    $query->whereHas('irs', function($q) {
-                        $q->where('status', 'disetujui');
-                    });
-                    break;
-            }
-        }
-        $prodi = DB::table('prodi')->select('nama')->get();
-        $counts = [
-            'belum_irs' => Mahasiswa::whereDoesntHave('irs')->count(),
-            'belum_disetujui' => Mahasiswa::whereHas('irs', function($q) {
-                $q->where('status', 'pending');
-            })->count(),
-            'sudah_disetujui' => Mahasiswa::whereHas('irs', function($q) {
-                $q->where('status', 'disetujui');
-            })->count()
-        ];
-        $mahasiswa = Mahasiswa::with('irs')->get()->map(function($mhs) {
+        
+        $mahasiswa = $query->get()->map(function($mhs) {
             // Hitung IPS
             $dataKHS = DB::table('khs')
                 ->where('nim', $mhs->nim)
@@ -84,7 +61,7 @@ class PembimbingAkademikController extends Controller
             
             $total_nilai = 0;
             $totalSKS = 0;
-    
+
             foreach($dataKHS as $KHS){
                 $bobot = $nilai[strtoupper(trim($KHS->nilai_huruf))] ?? 0;
                 $total_nilai += $KHS->sks * $bobot;
@@ -95,7 +72,7 @@ class PembimbingAkademikController extends Controller
             return $mhs;
         });
         
-        return view('pembimbingakademik.halamanrevie', compact('user', 'prodi', 'mahasiswa', 'counts'));
+        return view('pembimbingakademik.halamanrevie', compact('user', 'prodi', 'mahasiswa'));
     }
 
     public function resetFilter()
@@ -113,8 +90,9 @@ class PembimbingAkademikController extends Controller
             ->get();
 
         $statusIRS = $dataIRS->isNotEmpty() ? $dataIRS->first()->status : 'pending';
+        $mhs = Mahasiswa::find($nim);
 
-        return view('pembimbingakademik.halamanirsmhs', compact('user', 'dataIRS', 'statusIRS'));
+        return view('pembimbingakademik.halamanirsmhs', compact('user', 'dataIRS', 'statusIRS', 'mhs'));
     }
 
     public function approveIrs($semester)
