@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('no_telp', 15)->nullable();
             $table->string('email', 100)->nullable();
             $table->string('jurusan', 100)->nullable();
+            $table->integer('angkatan')->nullable();
             $table->integer('semester')->nullable();
             $table->string('jalur_masuk', 50)->nullable();
             $table->enum('status', ['Aktif', 'Cuti', 'Belum Her-Registrasi'])->default('Belum Her-Registrasi');

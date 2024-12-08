@@ -32,8 +32,16 @@ class Mahasiswa extends Model
 
     public function irs()
     {
-    return $this->hasMany(Irs::class, 'nim', 'nim');
+    return $this->hasMany(IRS::class, 'nim', 'nim');
+    }
+    public function prodi()
+    {
+        return $this->belongsTo(Prodi::class, 'jurusan', 'nama');
     }
     public $timestamps = false;
 
+    public function khs()
+    {
+        return $this->hasMany(KHS::class);
+    }
 }

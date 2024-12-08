@@ -273,7 +273,6 @@ class MahasiswaController extends Controller
         return $pdf->download($filename);
     }
     
-
     public function daftarMhs(){
         $mahasiswa = Mahasiswa::with('irs')->get();
         return view('pembimbingakademik.halamanrevie', compact('mahasiswa'));

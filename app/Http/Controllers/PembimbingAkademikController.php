@@ -75,15 +75,31 @@ class PembimbingAkademikController extends Controller
     }
 
     public function halamanIrsMhs($nim)
-    {
-        $user = Auth::user();
-        $user->load('akademik');
+{
+    $user = Auth::user();
+    $user->load('akademik');
 
-        $dataIRS = IRS::with('jadwal')->where('nim', $nim)->get();
-        $statusIRS = $dataIRS->isNotEmpty() ? $dataIRS->first()->status : 'pending';
+    $dataIRS = IRS::with('jadwal')
+        ->where('nim', $nim)
+        ->get();
 
-        return view('pembimbingakademik.halamanirsmhs', compact('user', 'dataIRS', 'statusIRS'));
-    }
+    // Add debug logging
+    \Log::info('IRS Data for NIM ' . $nim, ['count' => $dataIRS->count(), 'data' => $dataIRS]);
+
+    $statusIRS = $dataIRS->isNotEmpty() ? $dataIRS->first()->status : 'pending';
+
+    return view('pembimbingakademik.halamanirsmhs', compact('user', 'dataIRS', 'statusIRS'));
+}
+    // public function halamanIrsMhs($nim)
+    // {
+    //     $user = Auth::user();
+    //     $user->load('akademik');
+
+    //     $dataIRS = IRS::with('jadwal')->where('nim', $nim)->get();
+    //     $statusIRS = $dataIRS->isNotEmpty() ? $dataIRS->first()->status : 'pending';
+
+    //     return view('pembimbingakademik.halamanirsmhs', compact('user', 'dataIRS', 'statusIRS'));
+    // }
 
     public function approveIrs($semester)
     {

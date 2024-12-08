@@ -137,7 +137,7 @@
                             <td class="p-4">{{ $mhs->jalur_masuk }}</td>
                             <td class="p-4">
                                 @if($mhs->irs->count() > 0)
-                                    {{ $mhs->ips ?? 'N/A' }}
+                                    {{ number_format($mhs->ips, 2) ?? 'N/A' }}
                                 @else
                                     N/A
                                 @endif
