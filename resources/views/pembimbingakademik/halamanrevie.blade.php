@@ -66,7 +66,6 @@
                     @if(request('status_irs'))
                         <input type="hidden" name="status_irs" value="{{ request('status_irs') }}">
                     @endif
-                    
                     <div class="mb-4">
                         <div class="mb-4 flex items-center">
                             <span class="mr-2 w-24">Angkatan :</span>
@@ -135,27 +134,21 @@
                             <td class="p-4">{{ $mhs->jurusan }}</td>
                             <td class="p-4">{{ $mhs->angkatan }}</td>
                             <td class="p-4">{{ $mhs->jalur_masuk }}</td>
-                            <td class="p-4">
-                                @if($mhs->irs->count() > 0)
-                                    {{ number_format($mhs->ips, 2) ?? 'N/A' }}
-                                @else
-                                    N/A
-                                @endif
-                            </td>
+                            <td class="p-4">{{ $mhs->ips }}</td>
                             <td class="p-4">
                             @if($mhs->irs->count() > 0)
-                            @if($mhs->irs->first()->status === 'disetujui')
-                                <span class="block px-2 py-1 bg-green-500 rounded text-white w-full text-center font-bold">
-                                    Disetujui
-                                </span>
-                            @elseif($mhs->irs->first()->status === 'pending')
-                                <span class="block px-2 py-1 bg-yellow-500 rounded text-white w-full text-center font-bold">
-                                    Belum Disetujui
-                                </span>
+                                @if($mhs->irs->first()->status === 'disetujui')
+                                    <span class="block px-2 py-1 bg-green-500 rounded text-white w-full text-center font-bold">
+                                        Disetujui
+                                    </span>
+                                @elseif($mhs->irs->first()->status === 'pending')
+                                    <span class="block px-2 py-1 bg-yellow-500 rounded text-white w-full text-center font-bold">
+                                        Belum Disetujui
+                                    </span>
+                                @endif
+                            @else
+                                <span class="block px-2 py-1 bg-red-500 rounded text-white w-full text-center font-bold">Belum IRS</span>
                             @endif
-                        @else
-                            <span class="block px-2 py-1 bg-red-500 rounded text-white w-full text-center font-bold">Belum IRS</span>
-                        @endif
                             </td>
                         </tr>
                         @endforeach

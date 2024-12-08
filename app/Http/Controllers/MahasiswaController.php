@@ -272,12 +272,7 @@ class MahasiswaController extends Controller
         $filename = 'Laporan_Mahasiswa_' . $mahasiswa->nim . '.pdf';
         return $pdf->download($filename);
     }
-    
-    public function daftarMhs(){
-        $mahasiswa = Mahasiswa::with('irs')->get();
-        return view('pembimbingakademik.halamanrevie', compact('mahasiswa'));
-    }
-    
+        
     public function delete(Request $request){
         $validated = $request->validate([
             'kodemk' => 'required',

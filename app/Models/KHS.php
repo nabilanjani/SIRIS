@@ -12,6 +12,6 @@ class KHS extends Model
 
     public function mahasiswa()
     {
-        return $this->belongsTo(Mahasiswa::class);
+        return $this->belongsTo(Mahasiswa::class, 'nim', 'nim');
     }
 }

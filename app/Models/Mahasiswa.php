@@ -42,6 +42,6 @@ class Mahasiswa extends Model
 
     public function khs()
     {
-        return $this->hasMany(KHS::class);
+        return $this->hasMany(KHS::class, 'nim', 'nim');
     }
 }

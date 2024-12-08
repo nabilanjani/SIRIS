@@ -92,7 +92,7 @@
                             @if ($semester > 0)
                             <li class="border-b border-gray-600 pb-2">
                                 <button class="accordion-toggle flex justify-between w-full text-left" onclick="toggleAccordion(this)">
-                                    <span>Semester - {{ $semester }} | Tahun Ajaran {{ $irsItems->first()->tahun_akademik }} </span>
+                                    <span>Semester - {{ $semester }}</span>
                                     <span class="accordion-icon">+</span>
                                 </button>
                             <div class="accordion-content mt-2 hidden text-gray-400">
