@@ -134,18 +134,19 @@
                             <input type="hidden" name="kelas" value="{{ $mk->kelas }}">
                             <tr>
                                 <td class="border border-black px-4 py-2">{{ $mk->kodemk }}</td>
-                                <td class="border border-black px-4 py-2">{{ $mk->namamk }}</td>
-                                <td class="border border-black px-4 py-2">{{ $mk->semester }}</td>
-                                <td class="border border-black px-4 py-2">{{ $mk->sks }}</td>
-                                <td class="border border-black px-4 py-2">{{ $mk->kelas }}</td>
-                                <td class="border border-black px-4 py-2">
+                            <td class="border border-black px-4 py-2">{{ $mk->namamk }}</td>
+                            <td class="border border-black px-4 py-2">{{ $mk->semester }}</td>
+                            <td class="border border-black px-4 py-2">{{ $mk->sks }}</td>
+                            <td class="border border-black px-4 py-2">{{ $mk->kelas }}</td>
+                            <td class="border border-black px-4 py-2">
                                 <button type="submit" 
                                     class="bg-yellow-200 px-4 py-2 rounded hover:bg-yellow-600 transition">
                                     Hapus
                                 </button>
-                                </td>
+                            </td>
                             </tr>
                         </form>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
