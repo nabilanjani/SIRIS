@@ -33,6 +33,10 @@ class HomeController extends Controller
     //     return view('mahasiswa.herreg'); // Adjust the view path as necessary
     // }
 
+        public function lihatirs(){
+            return view('mahasiswa.lihatirs');
+        }
+
     // public function kaprodiDashboard()
     // {
     //     return view('kaprodi.dashboard');

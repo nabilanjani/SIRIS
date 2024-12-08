@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Log;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -244,6 +245,34 @@ class MahasiswaController extends Controller
             return redirect()->back()->withErrors(['message' => 'Pengambilan IRS gagal: ' . $e->getMessage()]);
         }
     }
+
+    public function cetak(Request $request)
+    {
+        $user = Auth::user();
+        $mahasiswa = Mahasiswa::where('email', $user->email)->first();
+    
+        if (!$mahasiswa) {
+            return redirect()->back()->with('error', 'Data mahasiswa tidak ditemukan.');
+        }
+        $irs = IRS::where('nim', $mahasiswa->nim)->get();    
+        return view('mahasiswa.cetak', compact('mahasiswa', 'irs'));
+    }
+    
+    public function cetakPdf(Request $request)
+    {
+        // Ambil data mahasiswa yang sedang login
+        $user = Auth::user();
+        $mahasiswa = Mahasiswa::where('email', $user->email)->first();
+    
+        if (!$mahasiswa) {
+            return redirect()->back()->with('error', 'Data mahasiswa tidak ditemukan.');
+        }
+        $irs = IRS::where('nim', $mahasiswa->nim)->get();    
+        $pdf = Pdf::loadView('mahasiswa.cetakpdf', compact('mahasiswa', 'irs'));
+        $filename = 'Laporan_Mahasiswa_' . $mahasiswa->nim . '.pdf';
+        return $pdf->download($filename);
+    }
+    
 
     public function daftarMhs(){
         $mahasiswa = Mahasiswa::with('irs')->get();

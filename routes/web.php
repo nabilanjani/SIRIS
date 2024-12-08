@@ -43,6 +43,10 @@ Route::middleware(['auth', 'mahasiswa'])->group(function () {
     Route::get('mahasiswa/irs', [MahasiswaController::class, 'index'])->name('irs.index');
     Route::post('/irs/store', [MahasiswaController::class, 'store'])->name('irs.store');
     Route::delete('/irs/delete', [MahasiswaController::class, 'delete'])->name('irs.delete');
+    Route::get('mahasiswa/cetak', [MahasiswaController::class, 'cetak'])->name('mahasiswa.cetak');
+    Route::get('/mahasiswa/cetakpdf', [MahasiswaController::class, 'cetakPdf'])->name('mahasiswa.cetakpdf');
+
+
 });
 
 //dekan
