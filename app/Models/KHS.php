@@ -10,4 +10,8 @@ class KHS extends Model
     use HasFactory;
     protected $table = 'khs';
 
+    public function mahasiswa()
+    {
+        return $this->belongsTo(Mahasiswa::class, 'nim', 'nim');
+    }
 }

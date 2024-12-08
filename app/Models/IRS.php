@@ -36,9 +36,10 @@ class IRS extends Model
     protected $attributes = [
         'status' => 'pending',  // status default 'pending'
     ];
+
     public function jadwal()
     {
-        return $this->hasOne(Jadwal::class, 'id_irs', 'id');
+        return $this->belongsTo(Jadwal::class, 'id', 'id');
     }
 
 }

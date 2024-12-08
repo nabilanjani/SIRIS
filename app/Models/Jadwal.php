@@ -17,9 +17,7 @@ class Jadwal extends Model
     ];
 
     public function irs()
-{
-    return $this->hasMany(IRS::class, 'id_irs', 'id'); // id_irs di IRS, id di jadwal
-}
-
-
+    {
+        return $this->hasMany(IRS::class, 'id', 'id'); // id_irs di IRS, id di jadwal
+    }
 }

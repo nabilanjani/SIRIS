@@ -66,9 +66,38 @@ class PembimbingAkademikController extends Controller
                 $q->where('status', 'disetujui');
             })->count()
         ];
-        $mahasiswa = $query->get();
+        $mahasiswa = Mahasiswa::with('irs')->get()->map(function($mhs) {
+            // Hitung IPS
+            $dataKHS = DB::table('khs')
+                ->where('nim', $mhs->nim)
+                ->where('semester', $mhs->semester - 1)
+                ->whereNotNull('nilai_huruf')
+                ->get(['sks', 'nilai_huruf']);
+                
+            $nilai = [
+                'A' => 4,
+                'B' => 3,
+                'C' => 2,
+                'D' => 1,
+                'E' => 0,
+            ];
+            
+            $total_nilai = 0;
+            $totalSKS = 0;
+    
+            foreach($dataKHS as $KHS){
+                $bobot = $nilai[strtoupper(trim($KHS->nilai_huruf))] ?? 0;
+                $total_nilai += $KHS->sks * $bobot;
+                $totalSKS += $KHS->sks;
+            }
+            
+            $mhs->ips = $totalSKS > 0 ? round($total_nilai / $totalSKS, 2) : 0;
+            return $mhs;
+        });
+        
         return view('pembimbingakademik.halamanrevie', compact('user', 'prodi', 'mahasiswa', 'counts'));
     }
+
     public function resetFilter()
     {
         return redirect()->route('pembimbingakademik.halamanrevie')->with('success', 'Filter berhasil direset');
@@ -79,7 +108,10 @@ class PembimbingAkademikController extends Controller
         $user = Auth::user();
         $user->load('akademik');
 
-        $dataIRS = IRS::with('jadwal')->where('nim', $nim)->get();
+        $dataIRS = IRS::with('jadwal')
+            ->where('nim', $nim)
+            ->get();
+
         $statusIRS = $dataIRS->isNotEmpty() ? $dataIRS->first()->status : 'pending';
 
         return view('pembimbingakademik.halamanirsmhs', compact('user', 'dataIRS', 'statusIRS'));

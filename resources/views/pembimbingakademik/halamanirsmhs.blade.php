@@ -45,6 +45,7 @@
                 </a>
             </nav>
         </div>
+        <!-- Main Content -->
         <div class="flex-1 p-6 overflow-y-auto">
             <!-- Top Bar -->
             <div class="flex justify-between items-center mb-6">
@@ -61,6 +62,7 @@
                     <i class="fas fa-bell"></i>
                 </div>
             </div>
+            <!-- Alert Success -->
             @if(session('success'))
             <div id="alert-success" class="mb-6 bg-green-500 text-white p-4 rounded-lg flex justify-between items-center">
                 <div class="flex items-center">
@@ -72,22 +74,25 @@
                 </button>
             </div>
             @endif
+            <!-- Content -->
             <div>
                 <h1 class="text-2xl font-bold mb-4">IRS Mahasiswa</h1>
                 <div class="flex justify-between mb-4">
                 <a href="/pembimbingakademik/halamanirsmhs" id="link-irs" class="flex-1 text-center border-b-2 border-white pb-2" >IRS</a>
                 <a href="/pembimbingakademik/halamankhsmhs" id="link-khs" class="flex-1 text-center text-gray-400" >KHS</a>
                 <a href="/pembimbingakademik/halamantranskripmhs" id="link-transkrip" class="flex-1 text-center text-gray-400">Transkrip</a>
+
                 </div>
                 <div>
                     <h2 class="text-xl font-semibold mb-4">Isian Rencana Semester (IRS)</h2>
                     <ul class="space-y-4">
+                        <!-- Accordion Item 1 -->
                         <li class="border-b border-gray-600 pb-2">
-                        @foreach ($dataIRS as $semester => $irsItems)
+                        @foreach ($dataIRS->groupBy('semester') as $semester => $irsItems)
                             @if ($semester > 0)
                             <li class="border-b border-gray-600 pb-2">
                                 <button class="accordion-toggle flex justify-between w-full text-left" onclick="toggleAccordion(this)">
-                                    <span>Semester - {{ $semester }} | Tahun Ajaran {{ $irsItems->first()->tahun_akademik }} </span>
+                                    <span>Semester - {{ $semester }}</span>
                                     <span class="accordion-icon">+</span>
                                 </button>
                             <div class="accordion-content mt-2 hidden text-gray-400">
@@ -113,7 +118,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach ($dataIRS as $index => $item)
+                                    @foreach ($irsItems as $index => $item)
                                         <tr class="bg-gray-700 border-b border-gray-600 hover:bg-gray-600">
                                             <td class="py-4 px-6">{{ $index + 1 }}</td>
                                             <td class="py-4 px-6">{{ $item->kodemk }}</td>
@@ -134,6 +139,7 @@
                         </li>
                         @endif
                     @endforeach
+                            <!-- Modal Konfirmasi -->
                         <div id="confirmationModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                             <div class="bg-white text-black p-6 rounded-lg w-1/3">
                                 <h2 class="text-xl font-bold mb-4">Konfirmasi</h2>
