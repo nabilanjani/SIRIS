@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -14,23 +15,23 @@ class HomeController extends Controller
     //     return view('pembimbingakademik.dashboard');
     // }
 
-    public function mahasiswaDashboard()
-    {
-        // Get the authenticated user
-        $user = Auth::user();
+    // public function mahasiswaDashboard()
+    // {
+    //     // Get the authenticated user
+    //     $user = Auth::user();
     
-        // Retrieve the mahasiswa record based on the authenticated user's email
-        $mahasiswa = User::where('email', $user->email)->firstOrFail();
-    
-        // Pass the necessary user data to the view
-        return view('mahasiswa.dashboard', [
-            'user' => $mahasiswa // Pass the whole mahasiswa object
-        ]);
-    }
-    public function herregistrasi()
-    {
-        return view('mahasiswa.herreg'); // Adjust the view path as necessary
-    }
+    //     // Retrieve the mahasiswa record based on the authenticated user's email
+    //     $mahasiswa = User::where('email', $user->email)->firstOrFail();
+    //     $mahasiswa = Mahasiswa::all();
+    //     // Pass the necessary user data to the view
+    //     return view('mahasiswa.dashboard', [
+    //         'user' => $mahasiswa // Pass the whole mahasiswa object
+    //     ]);
+    // }
+    // public function herregistrasi()
+    // {
+    //     return view('mahasiswa.herreg'); // Adjust the view path as necessary
+    // }
 
     // public function kaprodiDashboard()
     // {

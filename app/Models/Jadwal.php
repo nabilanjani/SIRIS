@@ -13,7 +13,7 @@ class Jadwal extends Model
     protected $fillable = [
         'namamk', 'jenis_mata_kuliah', 'jenis_pertemuan', 'jenis_kelas',
         'kelas', 'sks', 'semester', 'ruang_kuliah', 'dosen_pengampu',
-        'koordinator', 'mulai', 'selesai', 'kuota', 'kurikulum'
+        'koordinator', 'mulai', 'selesai', 'kuota', 'kurikulum', 'hari',
     ];
 
     public function irs()

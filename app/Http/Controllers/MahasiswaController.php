@@ -14,6 +14,69 @@ use App\Models\Jadwal;
 class MahasiswaController extends Controller
 {
     
+    public function herreg()
+    {
+        $user = Auth::user();
+        $mahasiswa = Mahasiswa::where('email', $user->email)->first();
+
+        if (!$mahasiswa) {
+            abort(404, 'Mahasiswa tidak ditemukan');
+        }
+
+        return view('mahasiswa.herreg', compact('user', 'mahasiswa'));
+    }
+
+    public function setAktif($nim)
+    {
+        $user = Auth::user();
+        $mahasiswa = Mahasiswa::where('nim', $nim)->where('email', $user->email)->first();
+
+        if (!$mahasiswa) {
+            return redirect()->back()->with('error', 'Mahasiswa tidak ditemukan.');
+        }
+
+        $mahasiswa->status = 'Aktif'; // Set status ke Aktif
+        $mahasiswa->save();
+
+        return redirect()->back()->with('success', 'Status berhasil diubah ke Aktif.');
+    }
+
+    public function setCuti($nim)
+    {
+        $user = Auth::user();
+        $mahasiswa = Mahasiswa::where('nim', $nim)->where('email', $user->email)->first();
+
+        if (!$mahasiswa) {
+            return redirect()->back()->with('error', 'Mahasiswa tidak ditemukan.');
+        }
+
+        $mahasiswa->status = 'Cuti'; // Set status ke Cuti
+        $mahasiswa->save();
+
+        return redirect()->back()->with('success', 'Status berhasil diubah ke Cuti.');
+    }
+
+    public function batalkan($nim)
+    {
+    $user = Auth::user();
+    $mahasiswa = Mahasiswa::where('nim', $nim)->where('email', $user->email)->first();
+
+    if (!$mahasiswa) {
+        return redirect()->back()->with('error', 'Mahasiswa tidak ditemukan.');
+    }
+
+    $mahasiswa->status = 'Belum Her-Registrasi';
+    $mahasiswa->save();
+
+    return redirect()->back()->with('success', 'Status berhasil dibatalkan.');
+    }
+
+    public function dashboard(){
+        $user = Auth::user();
+        $mahasiswa = Mahasiswa::where('email', $user->email)->first();
+        $mahasiswa = Mahasiswa::all();
+        return view('mahasiswa.dashboard', compact('mahasiswa'));
+    }
     public function index(){
 
         //data mahasiswa yang login
@@ -93,6 +156,8 @@ class MahasiswaController extends Controller
             ->first();
         $statusIRS = $statusIRS ? $statusIRS->status : null;
         return view('mahasiswa.irs', compact('irs','jadwal','user','irsSebelum','mahasiswa','totalSKSdiambil','daftarMK','ips','maksSKS','statusIRS','alertStatusMhs'));
+        return view('mahasiswa.lihatirs', compact('mahasiswa', 'irs', 'jadwal', 'ips', 'maksSKS', 'totalSKSdiambil'));
+
     }
 
     public function store(Request $request)
@@ -101,6 +166,7 @@ class MahasiswaController extends Controller
             // Ambil data mahasiswa berdasarkan email
             $user = Auth::user();
             $mahasiswa = Mahasiswa::where('email', $user->email)->first();
+            $jadwal = Jadwal::all();
 
             // Validasi request (pastikan semua field ada)
             $request->validate([
@@ -109,22 +175,63 @@ class MahasiswaController extends Controller
                 'semester' => 'required|integer',
                 'kelas' => 'required',
                 'sks' => 'required|integer',
+                'mulai' => 'required|date_format:H:i', 
+                'selesai' => 'required|date_format:H:i', 
+                'hari' => 'required|string', 
             ]);
+
 
             // Simpan data ke tabel IRS tanpa kolom tahun_akademik
             $irs = new IRS([
-                'nim' => $mahasiswa->nim, // Gunakan nim dari mahasiswa yang sedang login
-                'nama' => $mahasiswa->nama, // Ambil nama dari mahasiswa
-                'jurusan' => $mahasiswa->jurusan, // Ambil jurusan dari mahasiswa
-                'semester' => $request->semester, // Ambil semester dari input request
-                'kodemk' => $request->kodemk, // Ambil kode MK dari input request
-                'namamk' => $request->namamk, // Ambil nama MK dari input request
-                'kelas' => $request->kelas, // Ambil kelas dari input request
-                'sks' => $request->sks, // Ambil SKS dari input request
-                'status' => 'pending', // Status default adalah 'pending'
-                'tanggal_pengajuan' => now(), // Set tanggal pengajuan ke sekarang
-                'tanggal_persetujuan' => null, // Tidak diisi, biarkan NULL
+                'nim' => $mahasiswa->nim, 
+                'nama' => $mahasiswa->nama, 
+                'jurusan' => $mahasiswa->jurusan,
+                'semester' => $request->semester,
+                'kodemk' => $request->kodemk, 
+                'namamk' => $request->namamk,
+                'kelas' => $request->kelas,
+                'sks' => $request->sks,
+                'mulai' => $request->mulai,
+                'selesai' => $request->selesai,
+                'hari' => $request->hari,
+                'status' => 'pending',
+                'tanggal_pengajuan' => now(),
+                'tanggal_persetujuan' => null,
             ]);
+
+            
+            // Ambil informasi jadwal berdasarkan kode MK dan kelas
+            $jadwal = DB::table('jadwal')
+            ->where('kodemk', $request->kodemk)
+            ->where('kelas', $request->kelas)
+            ->first();
+
+            if (!$jadwal) {
+                return redirect()->back()->withErrors(['message' => 'Jadwal tidak ditemukan.']);
+            }
+
+            // Cek Duplikasi Mata Kuliah
+            $existingMK = IRS::where('nim', $mahasiswa->nim)
+            ->where('kodemk', $request->kodemk)
+            ->where('semester', $request->semester)
+            ->first();
+
+            if ($existingMK) {
+                return redirect()->back()->withErrors(['message' => 'Mata kuliah ini sudah diambil.']);
+            }
+
+            // Cek Jadwal Bentrok
+            $bentrok = IRS::where('nim', $mahasiswa->nim)
+            ->where('semester', $request->semester)
+            ->whereHas('jadwal', function ($query) use ($jadwal) {
+                $query->where('hari', $jadwal->hari)
+                    ->whereTime('mulai', '<', $jadwal->selesai)
+                    ->whereTime('selesai', '>', $jadwal->mulai);
+            })->first();
+
+            if ($bentrok) {
+                return redirect()->back()->withErrors(['message' => 'Jadwal mata kuliah bentrok dengan mata kuliah lain.']);
+            }
 
             // Simpan data IRS ke database
             if ($irs->save()) {
@@ -138,7 +245,10 @@ class MahasiswaController extends Controller
         }
     }
 
-    
+    public function daftarMhs(){
+        $mahasiswa = Mahasiswa::with('irs')->get();
+        return view('pembimbingakademik.halamanrevie', compact('mahasiswa'));
+    }
     
     public function delete(Request $request){
         $validated = $request->validate([
@@ -157,19 +267,13 @@ class MahasiswaController extends Controller
             KHS::where('kodemk', $validated['kodemk'])
                 ->where('nama', $validated['namaMhs'])
                 ->delete();        
-            return redirect()->back()->with('success', 'IRS berhasil dihapus.');
+            return redirect()->back()->with('success', 'Mata Kuliah berhasil dihapus.');
         }catch(\Exception $e){
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal menghapus mata kuliah' . $e->getMessage(),
             ], 500);
         }
-    }
-
-    public function daftarMhs()
-    {
-        $mahasiswa = Mahasiswa::with('irs')->get(); // Ambil data mahasiswa beserta IRS
-        return view('pembimbingakademik.halamanrevie', compact('mahasiswa')); // Kirim ke view
     }
 
 }

@@ -13,23 +13,26 @@ return new class extends Migration
     {
         Schema::create('irs', function (Blueprint $table) {
             $table->bigIncrements('id_irs');
-            $table->string('nim')->index();
+            $table->unsignedBigInteger('id')->nullable();
+            $table->string('nim');
             $table->string('nama'); 
-            $table->string('jurusan'); 
+            $table->string('jurusan');
             $table->integer('semester'); 
-            //$table->string('tahun_akademik'); 
-            $table->string('kodemk')->index(); 
-            $table->string('namamk'); 
+            $table->string('kodemk'); 
+            $table->string('namamk');
             $table->string('kelas'); 
             $table->integer('sks'); 
-            $table->enum('status', ['pending', 'disetujui', 'ditolak'])->default('pending');
+            $table->time('mulai'); 
+            $table->time('selesai'); 
+            $table->string('hari'); 
+            $table->enum('status', ['pending', 'disetujui', 'ditolak'])->nullable();;
             $table->date('tanggal_pengajuan')->nullable(); 
             $table->date('tanggal_persetujuan')->nullable(); 
 
             // foreign key
             $table->foreign('nim')->references('nim')->on('mahasiswa')->onDelete('cascade');
             $table->foreign('kodemk')->references('kodemk')->on('mata_kuliah')->onDelete('cascade');
-            $table->foreign('id_irs')->references('id')->on('jadwal')->onDelete('cascade');
+            $table->foreign('id')->references('id')->on('jadwal')->onDelete('cascade');
         });
     }
 

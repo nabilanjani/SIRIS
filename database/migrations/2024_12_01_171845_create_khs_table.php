@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('nama'); 
             $table->string('semester');
             $table->string('jurusan');
-            // $table->double('ips');  
             $table->string('kodemk')->index(); 
             $table->string('namamk'); 
             $table->integer('sks'); 

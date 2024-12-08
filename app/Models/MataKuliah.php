@@ -14,5 +14,5 @@ class MataKuliah extends Model
     public $incrementing = false;  // Karena primary key bukan auto-increment
     public $timestamps = false;
 
-    protected $fillable = ['kodemk', 'nama', 'sks', 'semester'];
+    protected $fillable = ['kodemk', 'namamk', 'sks', 'semester'];
 }

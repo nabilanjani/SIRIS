@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Mahasiswa extends Model
 {
+    protected $primaryKey = 'nim';
     protected $table = 'mahasiswa';
     use HasFactory;
     protected $fillable = [
@@ -22,27 +23,17 @@ class Mahasiswa extends Model
         'ipk',
         'ips',
     ];
+    protected $attributes = [
+        'status' => 'Belum Her-Registrasi',
+    ];
     public function user(){
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
-    public function mataKuliahDiambil()
-    {
-    return $this->hasMany(MataKuliah::class, 'nim'); // Sesuaikan dengan tabel Anda
-    }
 
     public function irs()
-{
-    return $this->hasMany(IRS::class, 'nim', 'nim');
-}
-
-    
-    public function prodi()
     {
-        return $this->belongsTo(Prodi::class, 'jurusan', 'nama');
+    return $this->hasMany(Irs::class, 'nim', 'nim');
     }
+    public $timestamps = false;
 
-    public function khs()
-    {
-        return $this->hasMany(KHS::class);
-    }
 }

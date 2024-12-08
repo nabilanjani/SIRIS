@@ -10,7 +10,7 @@
                     <div class="flex items-center space-x-4">
                         <div class="flex items-center space-x-2">
                             <i class="fas fa-user-circle text-white text-2xl"></i>
-                            <span class="text-white">Halo! {{ $user->name }}</span>
+                            <span class="text-white">Halo! {{ $mahasiswa->first()->nama }}</span>
                         </div>
                         <i class="fas fa-cog text-white text-xl"></i>
                         <i class="fas fa-bell text-white text-xl"></i>
@@ -40,8 +40,8 @@
                             <div class="flex items-center space-x-4 mb-4">
                                 <i class="fas fa-user-circle text-white text-4xl"></i>
                                 <div>
-                                    <h1 class="text-white text-2xl font-bold">{{ $user->name }}</h1>
-                                    <p class="text-white">24060122140169 | Informatika S1</p>
+                                    <h1 class="text-white text-2xl font-bold">{{ $mahasiswa->first()->nama }}</h1>
+                                    <p class="text-white">{{ $mahasiswa->first()->nim }} | {{ $mahasiswa->first()->jurusan }} S1</p>
                                 </div>
                             </div>
                             <div class="bg-blue-900 p-4 rounded-lg">
@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="bg-white p-4 rounded-lg text-center">
                                         <p class="font-semibold">Semester Studi</p>
-                                        <p>5</p>
+                                        <p>{{ $mahasiswa->first()->semester }}</p>
                                     </div>
                                     <div class="bg-white p-4 rounded-lg text-center border-2 border-red-500">
                                         <p class="font-semibold text-red-500">Status Akademik</p>

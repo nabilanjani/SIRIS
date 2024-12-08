@@ -6,6 +6,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RuangController;
 use App\Http\Controllers\PembimbingAkademikController;
 use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\MahasiswaController;
+
 
 Route::get('/', function () {
     return view('auth/login');
@@ -25,25 +27,22 @@ Route::middleware('auth')->group(function () {
 //mahasiswa
 Route::middleware(['auth', 'mahasiswa'])->group(function () {
     // Mahasiswa Dashboard
-    Route::get('mahasiswa/dashboard', [HomeController::class, 'mahasiswaDashboard'])->name('mahasiswa.dashboard');
+    Route::get('mahasiswa/dashboard', [MahasiswaController::class, 'dashboard'])->name('mahasiswa.dashboard');
 
-    // HER Registrasi
-    Route::get('mahasiswa/herreg', function () {
-        return view('mahasiswa.herreg');
-    })->name('mahasiswa.herreg');
+    // Her-Registrasi
+    Route::get('mahasiswa/herreg', [MahasiswaController::class, 'herreg'])->name('mahasiswa.herreg');
+    Route::post('/herreg/setAktif/{nim}', [MahasiswaController::class, 'setAktif'])->name('herreg.setAktif');
+    Route::post('/herreg/setCuti/{nim}', [MahasiswaController::class, 'setCuti'])->name('herreg.setCuti');
+    Route::post('/herreg/batalkan/{nim}', [MahasiswaController::class, 'batalkan'])->name('herreg.batalkan');
 
     // Akademik
     Route::get('mahasiswa/akademik', function () {
         return view('mahasiswa.akademik');
     })->name('mahasiswa.akademik');
 
-    // ISIIRS
-    Route::get('mahasiswa/isiirs', function () {
-        return view('mahasiswa.isiirs');
-    })->name('mahasiswa.isiirs');
-
-    //Route::post('irs/tambah', [IsiIRSController::class, 'buatIRS'])->name('irs.tambah');
-
+    Route::get('mahasiswa/irs', [MahasiswaController::class, 'index'])->name('irs.index');
+    Route::post('/irs/store', [MahasiswaController::class, 'store'])->name('irs.store');
+    Route::delete('/irs/delete', [MahasiswaController::class, 'delete'])->name('irs.delete');
 });
 
 //dekan

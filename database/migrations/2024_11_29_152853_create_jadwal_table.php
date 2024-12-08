@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('jadwal', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('kodemk')->index();
             $table->string('namamk');
             $table->enum('jenis_mata_kuliah', ['wajib', 'pilihan']);
             $table->enum('jenis_pertemuan', ['tatap_muka', 'online']);
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->integer('sks'); 
             $table->integer('semester');
             $table->string('ruang_kuliah');
+            $table->string('hari');
             $table->string('dosen_pengampu');
             $table->string('koordinator')->nullable();
             $table->time('mulai'); 
