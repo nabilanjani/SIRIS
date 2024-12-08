@@ -38,7 +38,7 @@ class IRS extends Model
     ];
     public function jadwal()
     {
-        return $this->hasOne(Jadwal::class, 'kodemk', 'kodemk');
+        return $this->hasOne(Jadwal::class, 'id_irs', 'id');
     }
 
 }
