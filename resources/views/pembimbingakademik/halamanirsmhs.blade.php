@@ -123,7 +123,7 @@
                                                     <tr class="bg-gray-700 border-b border-gray-600 hover:bg-gray-600">
                                                         <td class="py-4 px-6">{{ $index + 1 }}</td>
                                                         <td class="py-4 px-6">{{ $item->kodemk }}</td>
-                                                        <td class="py-4 px-6">{{ $item->jadwal->hari}}, {{ $item->jadwal->mulai}}-{{ $item->jadwal->selesai}}</td>
+                                                        <td class="py-4 px-6">{{ $item->hari}}, {{ $item->mulai}}-{{ $item->selesai}}</td>
                                                         <td class="py-4 px-6">{{ $item->namamk }}</td>
                                                         <td class="py-4 px-6">{{ $item->kelas }}</td>
                                                         <td class="py-4 px-6">{{ $item->sks }}</td>
