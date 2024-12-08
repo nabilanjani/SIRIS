@@ -16,7 +16,7 @@ class JadwalController extends Controller
     public function creatematkul(Request $request)
         {
         // Ambil data mata kuliah untuk dropdown
-        $mata_kuliah = DB::table('mata_kuliah')->select('kodemk', 'nama')->get();
+        $mata_kuliah = DB::table('mata_kuliah')->select('kodemk', 'namamk')->get();
 
         return view('kaprodi.buatjadwalbaru', compact('mata_kuliah'));
         }
@@ -70,7 +70,7 @@ class JadwalController extends Controller
     public function createdosen(Request $request)
     {
         // Ambil data prodi untuk dropdown
-        $dosen = DB::table('dosen')->select('nip', 'nama')->get();
+        $dosen = DB::table('dosen')->select('nip', 'namamk')->get();
         
         // Debug: Check if data is retrieved
         dd($dosen); // This will dump and die, showing you the data
@@ -89,7 +89,7 @@ class JadwalController extends Controller
 
     public function createjadwal()
     {
-        $mata_kuliah = DB::table('mata_kuliah')->select('kodemk', 'nama')->get();
+        $mata_kuliah = DB::table('mata_kuliah')->select('kodemk', 'namamk')->get();
         $dosen = DB::table('dosen')->select('nip', 'nama')->get();
         $ruang_kuliah = DB::table('ruang_kuliah')->select('kode_ruang', 'kapasitas')->get();
     
@@ -175,7 +175,7 @@ class JadwalController extends Controller
          // Simpan ke database
          Jadwal::create([
              'prodi' => $validated['prodi'],
-             'mata_kuliah' => $mata_kuliah->nama,
+             'mata_kuliah' => $mata_kuliah->namamk,
              'jenis_mata_kuliah' => $validated['jenis_mata_kuliah'],
              'jenis_pertemuan' => $validated['jenis_pertemuan'],
              'jenis_kelas' => $validated['jenis_kelas'],

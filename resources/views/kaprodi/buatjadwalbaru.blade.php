@@ -186,7 +186,7 @@
                         @if(!empty($mata_kuliah) && $mata_kuliah->count())
                             @foreach ($mata_kuliah as $matkul)
                                 <option value="{{ $matkul->kodemk }}" {{ request('mata_kuliah') == $matkul->kodemk ? 'selected' : '' }}>
-                                    {{ $matkul->nama }}
+                                    {{ $matkul->namamk }}
                                 </option>
                             @endforeach
                         @else

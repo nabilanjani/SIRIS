@@ -7,6 +7,7 @@ use App\Http\Controllers\RuangController;
 use App\Http\Controllers\PembimbingAkademikController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\MataKuliahController;
 
 
 Route::get('/', function () {

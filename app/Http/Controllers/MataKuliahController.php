@@ -10,7 +10,7 @@ class MataKuliahController extends Controller
 { 
     public function index() 
     { 
-        $mata_kuliah = DB::table('mata_kuliah')->select('kodemk', 'nama', 'sks', 'semester')->get(); 
+        $mata_kuliah = DB::table('mata_kuliah')->select('kodemk', 'namamk', 'sks', 'semester')->get(); 
      
         return view('kaprodi.kelolamatkul', [ 
             'mata_kuliah' => $mata_kuliah, 
@@ -19,7 +19,7 @@ class MataKuliahController extends Controller
  
     public function create() 
     { 
-        $mata_kuliah = DB::table('mata_kuliah')->select('kodemk', 'nama', 'sks', 'semester')->get(); 
+        $mata_kuliah = DB::table('mata_kuliah')->select('kodemk', 'namamk', 'sks', 'semester')->get(); 
         return view('kaprodi.kelolamatkul', [
             'mata_kuliah' => $mata_kuliah
         ]); 
@@ -31,7 +31,7 @@ class MataKuliahController extends Controller
     $validatedData = $request->validate([
         'kodeProdi' => 'required|string',
         'kodemkText' => 'required|string',
-        'nama' => 'required|string',
+        'namamk' => 'required|string',
         'sks' => 'required|integer',
         'semester' => 'required|string',
     ]);
@@ -42,7 +42,7 @@ class MataKuliahController extends Controller
     // Menyimpan data ke dalam database
     $mataKuliah = new MataKuliah();
     $mataKuliah->kodemk = $kodemk;  // Menyimpan gabungan kodeProdi dan kodemkText sebagai kodemk
-    $mataKuliah->nama = $validatedData['nama'];
+    $mataKuliah->namamk = $validatedData['namamk'];
     $mataKuliah->sks = $validatedData['sks'];
     $mataKuliah->semester = $validatedData['semester'];
 
@@ -58,7 +58,7 @@ class MataKuliahController extends Controller
     public function edit($id) 
     { 
         $mataKuliah = MataKuliah::findOrFail($id); 
-        $mata_kuliah = DB::table('mata_kuliah')->select('kodemk', 'nama', 'sks', 'semester')->get(); 
+        $mata_kuliah = DB::table('mata_kuliah')->select('kodemk', 'namamk', 'sks', 'semester')->get(); 
         return view('kaprodi.kelolamatkul', compact('mataKuliah', 'mata_kuliah')); 
     } 
  
@@ -67,7 +67,7 @@ class MataKuliahController extends Controller
     try {
         // Manually validate the incoming request data
         $validatedData = $request->validate([
-            'nama' => 'required|string|max:255',
+            'namamk' => 'required|string|max:255',
             'sks' => 'required|integer|min:1',
             'semester' => 'required|integer|min:1',
         ]);
