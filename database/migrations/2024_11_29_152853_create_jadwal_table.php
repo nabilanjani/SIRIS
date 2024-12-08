@@ -12,7 +12,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jadwal', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->string('namamk');
+            $table->enum('jenis_mata_kuliah', ['wajib', 'pilihan']);
+            $table->enum('jenis_pertemuan', ['tatap_muka', 'online']);
+            $table->enum('jenis_kelas', ['reguler', 'iup']);
+            $table->string('kelas'); 
+            $table->integer('sks'); 
+            $table->integer('semester');
+            $table->string('ruang_kuliah');
+            $table->string('dosen_pengampu');
+            $table->string('koordinator')->nullable();
+            $table->time('mulai'); 
+            $table->time('selesai'); 
+            $table->integer('kuota'); 
+            $table->string('kurikulum');
+            $table->rememberToken();
             $table->timestamps();
         });
     }

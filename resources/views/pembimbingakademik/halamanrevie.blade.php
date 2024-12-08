@@ -61,45 +61,53 @@
                     <i class="fas fa-bell"></i>
                 </div>
             </div>
-            <!-- Breadcrumb -->
-            <!-- <div class="text-gray-400 mb-6">HOME / IRS</div> -->
-            <!-- Content -->
             <div>
-                <!-- <h1 class="text-2xl font-bold mb-4">Review IRS Mahasiswa</h1> -->
-            <form method="GET" action="{{ route('pembimbingakademik.halamanrevie') }}">
-                <div class="mb-4">
-                    <div class="mb-4 flex items-center">
-                        <span class="mr-2 w-24">Angkatan :</span>
-                        <select name="angkatan" class="p-2 rounded bg-gray-700 text-gray-300 w-60">
-                            <option value="">--- Pilih Angkatan ---</option>
-                            @for($year = 2017; $year <= 2024; $year++)
-                                <option value="{{ $year }}" {{ request('angkatan') == $year ? 'selected' : '' }}>
-                                    {{ $year }}
-                                </option>
-                            @endfor
-                        </select>
+                <form method="GET" action="{{ route('pembimbingakademik.halamanrevie') }}">
+                    @if(request('status_irs'))
+                        <input type="hidden" name="status_irs" value="{{ request('status_irs') }}">
+                    @endif
+                    
+                    <div class="mb-4">
+                        <div class="mb-4 flex items-center">
+                            <span class="mr-2 w-24">Angkatan :</span>
+                            <select name="angkatan" class="p-2 rounded bg-gray-700 text-gray-300 w-60">
+                                <option value="">--- Pilih Angkatan ---</option>
+                                @for($year = 2017; $year <= 2024; $year++)
+                                    <option value="{{ $year }}" {{ request('angkatan') == $year ? 'selected' : '' }}>
+                                        {{ $year }}
+                                    </option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="mb-4 flex items-center">
+                            <span class="mr-2 w-24">Prodi :</span>
+                            <select name="prodi" class="p-2 rounded bg-gray-700 text-gray-300 w-60">
+                                <option value="">--- Pilih Prodi ---</option>
+                                @foreach($prodi as $p)
+                                    <option value="{{ $p->nama }}" {{ request('prodi') == $p->nama ? 'selected' : '' }}>
+                                        {{ $p->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button type="submit" class="mb-2 px-4 py-2 bg-blue-600 rounded text-white">Filter Data</button>
+                        <a href="{{ route('pembimbingakademik.resetFilter') }}" class="px-4 py-2 bg-gray-600 rounded text-white">Reset Filter</a>
                     </div>
-                    <div class="mb-4 flex items-center">
-                        <span class="mr-2 w-24">Prodi :</span>
-                        <select name="prodi" class="p-2 rounded bg-gray-700 text-gray-300 w-60">
-                            <option value="">--- Pilih Prodi ---</option>
-                            @foreach($prodi as $p)
-                                <option value="{{ $p->id_prodi }}" {{ request('prodi') == $p->id_prodi ? 'selected' : '' }}>
-                                    {{ $p->nama }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <button type="submit" class="mb-2 px-4 py-2 bg-blue-600 rounded text-white">Filter Data</button>
-                    <a href="{{ route('pembimbingakademik.resetFilter') }}" class="px-4 py-2 bg-gray-600 rounded text-white">Reset Filter</a>
-                </div>
-            </form>
+                </form>
                 <div class="flex space-x-4 mb-4">
-                    <button class="bg-red-500 text-white px-4 py-2 rounded">Belum IRS <br><strong>12</strong></button>
-                    <button class="bg-yellow-500 text-white px-4 py-2 rounded">IRS Belum Disetujui<br><strong>12</strong></button>
-                    <button class="bg-green-500 text-white px-4 py-2 rounded">IRS Sudah Disetujui<br><strong>12</strong></button>
+                    <a href="{{ route('pembimbingakademik.halamanrevie', ['status_irs' => 'belum_irs'] + request()->except('status_irs')) }}" 
+                    class="flex flex-col justify-center items-center bg-red-500 text-white px-4 py-2 rounded">
+                        Belum IRS <br><strong>{{ $counts['belum_irs'] }}</strong>
+                    </a>
+                    <a href="{{ route('pembimbingakademik.halamanrevie', ['status_irs' => 'belum_disetujui'] + request()->except('status_irs')) }}" 
+                    class="flex flex-col justify-center items-center bg-yellow-500 text-white px-4 py-2 rounded">
+                        IRS Belum Disetujui<br><strong>{{ $counts['belum_disetujui'] }}</strong>
+                    </a>
+                    <a href="{{ route('pembimbingakademik.halamanrevie', ['status_irs' => 'sudah_disetujui'] + request()->except('status_irs')) }}" 
+                    class="flex flex-col justify-center items-center bg-green-500 text-white px-4 py-2 rounded">
+                        IRS Sudah Disetujui<br><strong>{{ $counts['sudah_disetujui'] }}</strong>
+                    </a>
                 </div>
-                <!-- Table -->
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-gray-800 rounded-lg">
                         <thead>
@@ -111,29 +119,47 @@
                                 <th class="p-4">Angkatan</th>
                                 <th class="p-4">Jalur Masuk</th>
                                 <th class="p-4">IP Lalu</th>
-                                <th class="p-4">SKS Diambil</th>
                                 <th class="p-4">Status IRS</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-300">
-                            <tr class="border-b border-gray-700">
-                                <td class="p-4 flex items-center space-x-2">
-                                <a href="/pembimbingakademik/halamanirsmhs" class="px-4 py-2 bg-blue-600 rounded text-white inline-block">
-                                    <i class="fas fa-search"></i> 
+                        @foreach($mahasiswa as $mhs)
+                        <tr class="border-b border-gray-700">
+                            <td class="p-4 flex items-center space-x-2">
+                                <a href="/pembimbingakademik/halamanirsmhs/{{ $mhs->nim }}" class="px-4 py-2 bg-blue-600 rounded text-white inline-block">
+                                    <i class="fas fa-search"></i>
                                 </a>
-                                </td>
-                                <td class="p-4">AURA ARFANINSA AZ ZAHRA</td>
-                                <td class="p-4">24060122130097</td>
-                                <td class="p-4">S1 INFORMATIKA</td>
-                                <td class="p-4">2022</td>
-                                <td class="p-4">SBMPTN</td>
-                                <td class="p-4">3.88</td>
-                                <td class="p-4">85</td>
-                                <td class="p-4">
-                                    <span class="block px-2 py-1 bg-yellow-500 rounded text-white w-full text-center font-bold">Belum Disetujui</span>
-                                </td>
-                            </tr>
-                        </tbody>
+                            </td>
+                            <td class="p-4">{{ $mhs->nama }}</td>
+                            <td class="p-4">{{ $mhs->nim }}</td>
+                            <td class="p-4">{{ $mhs->jurusan }}</td>
+                            <td class="p-4">{{ $mhs->angkatan }}</td>
+                            <td class="p-4">{{ $mhs->jalur_masuk }}</td>
+                            <td class="p-4">
+                                @if($mhs->irs->count() > 0)
+                                    {{ $mhs->ips ?? 'N/A' }}
+                                @else
+                                    N/A
+                                @endif
+                            </td>
+                            <td class="p-4">
+                            @if($mhs->irs->count() > 0)
+                            @if($mhs->irs->first()->status === 'disetujui')
+                                <span class="block px-2 py-1 bg-green-500 rounded text-white w-full text-center font-bold">
+                                    Disetujui
+                                </span>
+                            @elseif($mhs->irs->first()->status === 'pending')
+                                <span class="block px-2 py-1 bg-yellow-500 rounded text-white w-full text-center font-bold">
+                                    Belum Disetujui
+                                </span>
+                            @endif
+                        @else
+                            <span class="block px-2 py-1 bg-red-500 rounded text-white w-full text-center font-bold">Belum IRS</span>
+                        @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
                     </table>
                 </div>
             </div>

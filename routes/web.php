@@ -133,19 +133,15 @@ Route::post('kaprodi/storejadwal', [JadwalController::class, 'store'])->name('st
 
 //pa
 Route::middleware(['auth', 'pembimbingakademik'])->group(function () {
-    // Dashboard PA
     Route::get('/pembimbingakademik/dashboard', [PembimbingAkademikController::class, 'dashboard'])
         ->name('pembimbingakademik.dashboard');
     Route::get('/pembimbingakademik/perwalian', [PembimbingAkademikController::class, 'perwalian'])
         ->name('pembimbingakademik.perwalian');
     Route::get('/pembimbingakademik/halamanrevie', [PembimbingAkademikController::class, 'halamanrevie'])
         ->name('pembimbingakademik.halamanrevie');
-    Route::get('/pembimbingakademik/halamanirsmhs', [PembimbingAkademikController::class, 'halamanirsmhs'])
-        ->name('pembimbingakademik.halamanirsmhs');
-    Route::get('/pembimbingakademik/halamankhsmhs', [PembimbingAkademikController::class, 'halamankhsmhs'])
-        ->name('pembimbingakademik.halamankhsmhs');
-    Route::get('/pembimbingakademik/halamantranskripmhs', [PembimbingAkademikController::class, 'halamantranskripmhs'])
-        ->name('pembimbingakademik.halamantranskripmhs');
+    Route::get('/pembimbingakademik/halamanirsmhs/{nim}', [PembimbingAkademikController::class, 'halamanIrsMhs'])->name('halamanirsmhs');
+    Route::post('/pembimbingakademik/approve-irs/{semester}', [PembimbingAkademikController::class, 'approveIrs'])
+        ->name('pembimbingakademik.approveIrs');  
     Route::get('/reset-filter', [PembimbingAkademikController::class, 'resetFilter'])->name('pembimbingakademik.resetFilter');
 });
 

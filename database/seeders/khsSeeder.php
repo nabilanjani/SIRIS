@@ -81,9 +81,4 @@ class khsSeeder extends Seeder
             ],
         ]);
     }
-    public function mahasiswa()
-{
-    return $this->belongsTo(Mahasiswa::class);
-}
-
 }

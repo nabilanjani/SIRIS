@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('mata_kuliah', function (Blueprint $table) {
             $table->string('kodemk', 10)->primary();
-            $table->string('nama', 100)->nullable();
+            $table->string('namamk', 100)->nullable();
             $table->integer('sks')->nullable();
             $table->string('semester', 10)->nullable();
         });
