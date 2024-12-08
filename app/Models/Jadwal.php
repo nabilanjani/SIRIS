@@ -13,7 +13,8 @@ class Jadwal extends Model
 
     protected $fillable = [
         'prodi',
-        'mata_kuliah',
+        'namamk',
+        'kodemk',
         'jenis_mata_kuliah',
         'jenis_pertemuan',
         'jenis_kelas',

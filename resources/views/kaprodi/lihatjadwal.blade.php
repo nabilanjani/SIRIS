@@ -179,7 +179,7 @@
                         const row = `
                             <tr class="text-center bg-[#2C3B7A] hover:bg-[#3143AC] transition">
                                 <td class="p-2">${item.mulai} - ${item.selesai}</td>
-                                <td class="p-2">${item.mata_kuliah}</td>
+                                <td class="p-2">${item.namamk}</td>
                                 <td class="p-2">${item.jenis_mata_kuliah.charAt(0).toUpperCase() + item.jenis_mata_kuliah.slice(1)}</td>
                                 <td class="p-2">${item.sks}</td>
                                 <td class="p-2">${item.kelas}</td>

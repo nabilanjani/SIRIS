@@ -94,7 +94,7 @@ class JadwalController extends Controller
         $ruang_kuliah = DB::table('ruang_kuliah')->select('kode_ruang', 'kapasitas')->get();
     
         return view('kaprodi.buatjadwalbaru', [
-            'mata_kuliah' => $mata_kuliah,
+            'namamk' => $mata_kuliah,
             'dosen' => $dosen,
             'ruang_kuliah' => $ruang_kuliah
         ]);
@@ -108,7 +108,7 @@ class JadwalController extends Controller
          // Validasi data
          $validated = $request->validate([
             'prodi' => 'required|string',
-             'mata_kuliah' => 'required',
+             'namamk' => 'required',
              'jenis_mata_kuliah' => 'required',
              'jenis_pertemuan' => 'required',
              'jenis_kelas' => 'required',
@@ -164,7 +164,7 @@ class JadwalController extends Controller
             ], 404);
         }
 
-        $mata_kuliah = \App\Models\MataKuliah::where('kodemk', $validated['mata_kuliah'])->first();
+        $mata_kuliah = \App\Models\MataKuliah::where('kodemk', $validated['namamk'])->first();
         if (!$mata_kuliah) {
             return response()->json([
                 'success' => false,
@@ -175,7 +175,7 @@ class JadwalController extends Controller
          // Simpan ke database
          Jadwal::create([
              'prodi' => $validated['prodi'],
-             'mata_kuliah' => $mata_kuliah->namamk,
+             'namamk' => $mata_kuliah->namamk,
              'jenis_mata_kuliah' => $validated['jenis_mata_kuliah'],
              'jenis_pertemuan' => $validated['jenis_pertemuan'],
              'jenis_kelas' => $validated['jenis_kelas'],

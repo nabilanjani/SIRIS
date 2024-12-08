@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('jadwal', function (Blueprint $table) {
             $table->id();
             $table->string('prodi');
-            $table->string('mata_kuliah');
+            $table->string('kodemk');
+            $table->string('namamk');
             $table->string('jenis_mata_kuliah');
             $table->string('jenis_pertemuan');
             $table->string('jenis_kelas');
@@ -31,6 +32,8 @@ return new class extends Migration
             $table->string('kurikulum');
             $table->unsignedTinyInteger('status')->default(0); // Default status tanpa after()
             $table->timestamps();
+
+            $table->foreign('kodemk')->references('kodemk')->on('mata_kuliah')->onDelete('cascade');
         });
     }
 

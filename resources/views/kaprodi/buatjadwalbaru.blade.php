@@ -183,7 +183,7 @@
                         <option>Pilih Matkul</option>
                         @if(!empty($mata_kuliah) && $mata_kuliah->count())
                             @foreach ($mata_kuliah as $matkul)
-                                <option value="{{ $matkul->kodemk }}" {{ request('mata_kuliah') == $matkul->kodemk ? 'selected' : '' }}>
+                                <option value="{{ $matkul->kodemk }}" {{ request('namamk') == $matkul->kodemk ? 'selected' : '' }}>
                                     {{ $matkul->namamk }}
                                 </option>
                             @endforeach
@@ -419,7 +419,7 @@
                         if (jadwalByDay[day].length > 0) {
                             const jadwalHtml = jadwalByDay[day].map(jadwal => `
                                 <div class="schedule-box">
-                                    <p class="font-bold">${jadwal.mata_kuliah}</p>
+                                    <p class="font-bold">${jadwal.namamk}</p>
                                     <p class="text-sm">
                                         ${jadwal.kelas} | ${jadwal.mulai} - ${jadwal.selesai}
                                     </p>
