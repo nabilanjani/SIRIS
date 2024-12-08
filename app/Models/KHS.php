@@ -11,5 +11,3 @@ class KHS extends Model
     protected $table = 'khs';
 
 }
-
-}

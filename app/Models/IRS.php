@@ -7,10 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class IRS extends Model
 {
-    protected $table = 'irs';
-    protected $primaryKey = 'id_irs';
-    public $timestamps = true;  // Pastikan timestamps diaktifkan
-    const UPDATED_AT = 'tanggal_persetujuan'; // Menentukan kolom yang digunakan untuk updated_at
     use HasFactory;
 
     protected $table = 'irs';
