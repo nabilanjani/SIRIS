@@ -7,29 +7,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<body class="bg-gradient-to-b from-blue-900 to-blue-700 text-white font-sans">
-    <div class="flex h-screen">
-        <!-- Sidebar -->
-        <div class="w-1/5 bg-gradient-to-b from-gray-900 to-gray-800 p-6">
+<body class="bg-gradient-to-b from-blue-900 to-gray-800 text-white font-sans">
+    <div class="flex h-screen overflow-hidden"> 
+            <!-- Sidebar -->
+            <div class="w-1/5 bg-gradient-to-b from-gray-900 to-gray-800 p-6">
             <div class="text-2xl font-bold mb-8">SIRIS UNDIP</div>
             <nav class="space-y-4">
-                <a href="/dekan/dashboard" class="flex items-center space-x-2 text-gray-400 hover:text-white py-2 px-4 font-bold hover:font-bold">
+                <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-white py-2 px-4 active:font-bold">
+                <a href="/dekan/dashboard" class="flex items-center space-x-2 text-gray-400 hover:text-white py-2 px-4">
                     <i class="fas fa-home"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="/dekan/perkuliahan" class="flex items-center space-x-2 text-white-400 hover:text-white py-2 px-4 font-bold hover:font-bold">
-                    <i class="fas fa-user-friends"></i>
+                <a href="/dekan/perkuliahan" class="flex items-center space-x-2 text-white-400 hover:text-white py-2 px-4 font-bold hover:font-bold active:font-bold">
+                    <i class="fas fa-edit"></i>
                     <span>Perkuliahan</span>
                 </a>
-                <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-white py-2 px-4 ">
-                    <i class="fas fa-edit"></i>
-                    <span>Mahasiswa</span>
-                </a>
-                <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-white py-2 px-4 ">
+                <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-white py-2 px-4">
                     <i class="fas fa-book"></i>
-                    <span>Manaj. Wisuda</span>
+                    <span>Manajemen Wisuda</span>
                 </a>
-                <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-white py-2 px-4 ">
+                <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-white py-2 px-4">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>
@@ -46,9 +43,8 @@
                 </a>
             </nav>
         </div>
-
         <!-- Main Content -->
-        <div class="flex-1 p-6">
+        <div class="flex-1 p-6 overflow-y-auto">
             <!-- Top Bar -->
             <div class="flex justify-between items-center mb-8">
                 <div class="relative w-1/3">
