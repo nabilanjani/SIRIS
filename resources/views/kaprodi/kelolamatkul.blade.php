@@ -165,11 +165,11 @@
                                 </div>
 
                                 <div>
-                                    <label for="nama" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nama Mata Kuliah</label>
+                                    <label for="namamk" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nama Mata Kuliah</label>
                                     <input 
                                         type="text" 
-                                        id="nama" 
-                                        name="nama" 
+                                        id="namamk" 
+                                        name="namamk" 
                                         class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm 
                                             bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 
                                             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
@@ -231,11 +231,11 @@
                                     @forelse ($mata_kuliah as $mk)
                                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{{ $mk->kodemk }}</td>
-                                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{{ $mk->nama }}</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{{ $mk->namamk }}</td>
                                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{{ $mk->sks }}</td>
                                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{{ $mk->semester }}</td>
                                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">
-                                            <a href="javascript:void(0);" onclick="openEditModal('{{ $mk->kodemk }}', '{{ $mk->nama }}', '{{ $mk->sks }}', '{{ $mk->semester }}')" class="text-yellow-400 dark:text-yellow-400 hover:underline">Edit</a>
+                                            <a href="javascript:void(0);" onclick="openEditModal('{{ $mk->kodemk }}', '{{ $mk->namamk }}', '{{ $mk->sks }}', '{{ $mk->semester }}')" class="text-yellow-400 dark:text-yellow-400 hover:underline">Edit</a>
                                             <a href="{{ route('kaprodi.kelolamatkul.destroy', $mk->kodemk) }}" class="text-red-600 dark:text-red-600 hover:underline" onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this item?')) { document.getElementById('delete-form-{{ $mk->kodemk }}').submit(); }">Delete</a>
                                             
                                             <form id="delete-form-{{ $mk->kodemk }}" action="{{ route('kaprodi.kelolamatkul.destroy', $mk->kodemk) }}" method="POST" style="display: none;">
@@ -266,8 +266,8 @@
                                 <input type="hidden" id="kodemk" name="kodemk">
                                 
                                 <div class="mb-4">
-                                    <label for="nama" class="block text-sm text-gray-600">Nama Mata Kuliah</label>
-                                    <input type="text" id="nama" name="nama" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white" required>
+                                    <label for="namamk" class="block text-sm text-gray-600">Nama Mata Kuliah</label>
+                                    <input type="text" id="namamk" name="namamk" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white" required>
                                 </div>
                                 
                                 <div class="mb-4">
@@ -487,12 +487,12 @@
     const editModal = document.getElementById('editModal');
     
     // Function to open the edit modal
-    window.openEditModal = function(kodemk, nama, sks, semester) {
+    window.openEditModal = function(kodemk, namamk, sks, semester) {
         const form = document.getElementById('editForm');
         
         // Populate form fields
         document.getElementById('kodemk').value = kodemk;
-        document.getElementById('nama').value = nama;
+        document.getElementById('namamk').value = namamk;
         document.getElementById('sks').value = sks;
         document.getElementById('semester').value = semester;
         

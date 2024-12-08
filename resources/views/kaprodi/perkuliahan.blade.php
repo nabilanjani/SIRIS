@@ -87,7 +87,7 @@
                             <span>Jadwal</span>
                             <i class="fas fa-heart text-white"></i>
                         </a>
-                        <a href="/kaprodi/mata-kuliah" class="bg-green-500 p-4 rounded-lg flex items-center justify-between hover:bg-green-600">
+                        <a href="/kaprodi/kelolamatkul" class="bg-green-500 p-4 rounded-lg flex items-center justify-between hover:bg-green-600">
                             <span>Mata Kuliah</span>
                             <i class="fas fa-heart text-white"></i>
                         </a>
