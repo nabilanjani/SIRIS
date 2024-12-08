@@ -51,15 +51,15 @@
                                 <div class="flex space-x-4">
                                     <div class="bg-white p-4 rounded-lg text-center">
                                         <p class="font-semibold">Semester Akademik</p>
-                                        <p>2024/2024</p>
+                                        <p>2024/2025</p>
                                     </div>
                                     <div class="bg-white p-4 rounded-lg text-center">
                                         <p class="font-semibold">Semester Studi</p>
                                         <p>{{ $mahasiswa->first()->semester }}</p>
                                     </div>
-                                    <div class="bg-white p-4 rounded-lg text-center border-2 border-red-500">
-                                        <p class="font-semibold text-red-500">Status Akademik</p>
-                                        <p class="text-red-500">Belum Her-Reg</p>
+                                    <div class="bg-white p-4 rounded-lg text-center border-2">
+                                        <p class="font-semibold text-black">Status Akademik</p>
+                                        <p class="text-black">{{ $mahasiswa->first()->status }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
                             <div class="flex space-x-4">
                                 <div class="bg-white p-4 rounded-lg text-center flex-1">
                                     <p class="font-semibold">IPk</p>
-                                    <p>4.00</p>
+                                    <p>3.87</p>
                                 </div>
                                 <div class="bg-white p-4 rounded-lg text-center flex-1">
                                     <p class="font-semibold">SKSk</p>
