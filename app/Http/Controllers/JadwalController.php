@@ -2,56 +2,215 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+
 use App\Models\MataKuliah;
-// Jika ada model untuk jadwal, impor juga:
+use Illuminate\Support\Facades\DB;
 use App\Models\Jadwal;
+
+// Jika ada model untuk jadwal, impor juga:
 
 class JadwalController extends Controller
 {
-    /**
-     * Menampilkan form untuk membuat jadwal baru.
-     */
-    public function create()
-    {
-        // Ambil semua data mata kuliah
-        $mata_kuliah = MataKuliah::all();
-        //dd($mata_kuliah);
+    public function creatematkul(Request $request)
+        {
+        // Ambil data mata kuliah untuk dropdown
+        $mata_kuliah = DB::table('mata_kuliah')->select('kodemk', 'nama')->get();
 
-        // Kirim data ke view 'kaprodi.buatjadwalbaru'
-        return view('kaprodi.buatjadwalbaru', compact('kodemk'));
+        return view('kaprodi.buatjadwalbaru', compact('mata_kuliah'));
+        }
+
+    // Daftar prodi yang tetap
+    protected $prodi = [
+        'Informatika', 
+        'Biologi', 
+        'Matematika', 
+        'Statistika', 
+        'Kimia', 
+        'Fisika', 
+        'Bioteknologi'
+    ];
+    
+    // Menampilkan halaman jadwal dengan semua data jadwal
+    public function index()
+    {
+        // Ambil semua data dari tabel jadwal
+        $jadwal = DB::table('jadwal')->get();
+        
+        // Kirim data ke view
+        return view('kaprodi.lihatjadwal', compact('jadwal'));
     }
 
+    // public function buatJadwalBaru(Request $request) {
+    //     $namaProdi = $request->session()->get('selectedProdi', 'Informatika'); // Default ke 'Informatika' jika tidak ada
+    //     $jadwal = Jadwal::where('prodi', $namaProdi)->get(); // Ganti dengan query jadwal sesuai prodi
+    //     return view('kaprodi.buatjadwalbaru', compact('jadwal', 'namaProdi'));
+    // }
+    
 
-
-    /**
-     * Menyimpan data jadwal baru ke database.
-     */
-    public function store(Request $request)
+    // Mendapatkan jadwal berdasarkan prodi
+    public function jadwal($namaProdi)
     {
-        // Validasi data input
-        $validated = $request->validate([
-            'mata_kuliah' => 'required',
-            'jenis_mata_kuliah' => 'required',
-            'jenis_pertemuan' => 'required',
-            'jenis_kelas' => 'required',
-            'kelas' => 'required',
-            'sks' => 'required|integer',
-            'semester' => 'required',
-            'ruang_kuliah' => 'required',
-            'dosen_pengampu' => 'required',
-            'koordinator' => 'required',
-            'mulai' => 'required|date_format:H:i',
-            'selesai' => 'required|date_format:H:i|after:mulai',
-            'kuota' => 'required|integer',
-            'kurikulum' => 'required',
+        // Validasi prodi
+        if (!in_array($namaProdi, $this->prodi)) {
+            return response()->json([
+                'error' => 'Prodi tidak valid'
+            ], 400);
+        }
+
+        // Ambil jadwal dari database berdasarkan prodi
+        $jadwal = DB::table('jadwal')
+            ->where('prodi', $namaProdi)
+            ->get();
+
+        return response()->json($jadwal);
+    }
+
+    public function createdosen(Request $request)
+    {
+        // Ambil data prodi untuk dropdown
+        $dosen = DB::table('dosen')->select('nip', 'nama')->get();
+        
+        // Debug: Check if data is retrieved
+        dd($dosen); // This will dump and die, showing you the data
+    
+        return view('kaprodi.buatjadwalbaru', compact('dosen'));
+    }
+
+    public function createruang(Request $request)
+        {
+    
+        // Ambil data prodi untuk dropdown
+        $ruang_kuliah = DB::table('ruang_kuliah')->select('kode_ruang', 'kapasitas')->get();
+
+        return view('kaprodi.buatjadwalbaru', compact('ruang_kuliah'));
+        }
+
+    public function createjadwal()
+    {
+        $mata_kuliah = DB::table('mata_kuliah')->select('kodemk', 'nama')->get();
+        $dosen = DB::table('dosen')->select('nip', 'nama')->get();
+        $ruang_kuliah = DB::table('ruang_kuliah')->select('kode_ruang', 'kapasitas')->get();
+    
+        return view('kaprodi.buatjadwalbaru', [
+            'mata_kuliah' => $mata_kuliah,
+            'dosen' => $dosen,
+            'ruang_kuliah' => $ruang_kuliah
         ]);
-
-        // Simpan data ke database (pastikan model Jadwal ada)
-        // Contoh jika menggunakan model Jadwal:
-        // Jadwal::create($validated);
-
-        // Redirect kembali ke halaman create jadwal dengan pesan sukses
-        return redirect()->route('createjadwal')->with('success', 'Jadwal berhasil ditambahkan!');
     }
+
+ // Tambahkan di atas jika belum ada
+
+ public function store(Request $request)
+ {
+     try {
+         // Validasi data
+         $validated = $request->validate([
+            'prodi' => 'required|string',
+             'mata_kuliah' => 'required',
+             'jenis_mata_kuliah' => 'required',
+             'jenis_pertemuan' => 'required',
+             'jenis_kelas' => 'required',
+             'kelas' => 'required',
+             'sks' => 'required|integer',
+             'semester' => 'required|integer',
+             'ruang_kuliah' => 'required',
+             'dosen_pengampu' => 'required',
+             'koordinator' => 'nullable',
+             'hari' => 'required',
+             'mulai' => 'required',
+             'selesai' => 'required|after:mulai',
+             'kuota' => 'required|integer',
+             'kurikulum' => 'required',
+             'status' => 'nullable|integer|in:0,1,2'
+         ]);
+
+         $validated['status'] = $validated['status'] ?? 0;
+
+         $isConflict = Jadwal::where('hari', $validated['hari'])
+         ->where('ruang_kuliah', $validated['ruang_kuliah'])
+         ->where(function ($query) use ($validated) {
+             $query->whereBetween('mulai', [$validated['mulai'], $validated['selesai']])
+                   ->orWhereBetween('selesai', [$validated['mulai'], $validated['selesai']])
+                   ->orWhere(function ($query) use ($validated) {
+                       $query->where('mulai', '<=', $validated['mulai'])
+                             ->where('selesai', '>=', $validated['selesai']);
+                   });
+          })
+          ->exists();
+      
+        if ($isConflict) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Maaf, jadwal bertabrakan dengan jadwal yang sudah ada.'
+            ], 400);
+        }
+
+         // Cari nama dosen berdasarkan NIP
+        $dosen = \App\Models\Dosen::where('nip', $validated['dosen_pengampu'])->first();
+        if (!$dosen) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Dosen tidak ditemukan.',
+            ], 404);
+        }
+
+        $dosen = \App\Models\Dosen::where('nip', $validated['koordinator'])->first();
+        if (!$dosen) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Dosen tidak ditemukan.',
+            ], 404);
+        }
+
+        $mata_kuliah = \App\Models\MataKuliah::where('kodemk', $validated['mata_kuliah'])->first();
+        if (!$mata_kuliah) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Mata kuliah tidak ditemukan.',
+            ], 404);
+        }
+ 
+         // Simpan ke database
+         Jadwal::create([
+             'prodi' => $validated['prodi'],
+             'mata_kuliah' => $mata_kuliah->nama,
+             'jenis_mata_kuliah' => $validated['jenis_mata_kuliah'],
+             'jenis_pertemuan' => $validated['jenis_pertemuan'],
+             'jenis_kelas' => $validated['jenis_kelas'],
+             'kelas' => $validated['kelas'],
+             'sks' => $validated['sks'],
+             'semester' => $validated['semester'],
+             'ruang_kuliah' => $validated['ruang_kuliah'],
+             'dosen_pengampu' => $dosen->nama,
+             'koordinator' => $dosen->nama,
+             'hari' => $validated['hari'],
+             'mulai' => $validated['mulai'],
+             'selesai' => $validated['selesai'],
+             'kuota' => $validated['kuota'],
+             'kurikulum' => $validated['kurikulum'],
+         ]);
+ 
+
+         $jadwals = Jadwal::where('prodi', $validated['prodi'])->get();
+
+         // Ambil jadwal terbaru
+         $jadwals = Jadwal::where('hari', $validated['hari'])->get();
+
+         return response()->json([
+             'success' => true,
+             'message' => 'Jadwal berhasil ditambahkan!',
+             'jadwals' => $jadwals,
+         ], 200);
+     } catch (\Exception $e) {
+         Log::error('Error saat menyimpan data: ' . $e->getMessage());
+ 
+         return response()->json([
+             'success' => false,
+             'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+         ], 500);
+     }
+ }
+
 }
