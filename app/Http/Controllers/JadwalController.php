@@ -41,12 +41,6 @@ class JadwalController extends Controller
         // Kirim data ke view
         return view('kaprodi.lihatjadwal', compact('jadwal'));
     }
-
-    // public function buatJadwalBaru(Request $request) {
-    //     $namaProdi = $request->session()->get('selectedProdi', 'Informatika'); // Default ke 'Informatika' jika tidak ada
-    //     $jadwal = Jadwal::where('prodi', $namaProdi)->get(); // Ganti dengan query jadwal sesuai prodi
-    //     return view('kaprodi.buatjadwalbaru', compact('jadwal', 'namaProdi'));
-    // }
     
 
     // Mendapatkan jadwal berdasarkan prodi
@@ -70,7 +64,7 @@ class JadwalController extends Controller
     public function createdosen(Request $request)
     {
         // Ambil data prodi untuk dropdown
-        $dosen = DB::table('dosen')->select('nip', 'namamk')->get();
+        $dosen = DB::table('dosen')->select('nip', 'nama')->get();
         
         // Debug: Check if data is retrieved
         dd($dosen); // This will dump and die, showing you the data

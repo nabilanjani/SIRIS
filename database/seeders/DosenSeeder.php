@@ -15,16 +15,16 @@ class DosenSeeder extends Seeder
         // Insert seed data
         DB::table('dosen')->insert([
             [
-                'nip' => '12345',
-                'nama' => 'Dr. Aris Sugiharto',
+                'nip' => '198203092006041002',
+                'nama' => 'Dr.Eng. Adi Wibowo, S.Si., M.Kom.',
             ],
             [
-                'nip' => '12354',
-                'nama' => 'Dr. Nyoba',
+                'nip' => '197404011999031002',
+                'nama' => 'Dr. Aris Puji Widodo, S.Si., M.T.',
             ],
             [
-                'nip' => '12346',
-                'nama' => 'Dr. Nyoba Lagi',
+                'nip' => '199603032024061003',
+                'nama' => 'Sandy Kurniawan, S.Kom., M.Kom.',
             ],
         ]);
     }
