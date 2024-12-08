@@ -89,7 +89,7 @@
                             <span>Buat Jadwal Baru</span>
                             <i class="fas fa-heart text-white"></i>
                         </a>
-                        <a class="bg-orange-500 p-4 rounded-lg flex justify-between items-center">
+                        <a href="/kaprodi/lihatjadwal" class="bg-orange-500 p-4 rounded-lg flex justify-between items-center">
                             <span>Lihat Jadwal</span>
                             <i class="fas fa-heart text-white"></i>
                         </a>

@@ -38,7 +38,7 @@ class IRS extends Model
     ];
     public function jadwal()
     {
-        return $this->hasOne(Jadwal::class, 'kodemk', 'kodemk');
+        return $this->belongsTo(Jadwal::class, 'kodemk', 'kodemk');
     }
 
 }

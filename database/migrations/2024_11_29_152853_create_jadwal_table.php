@@ -9,27 +9,27 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('jadwal', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('kodemk')->index();
-            $table->string('namamk');
-            $table->enum('jenis_mata_kuliah', ['wajib', 'pilihan']);
-            $table->enum('jenis_pertemuan', ['tatap_muka', 'online']);
-            $table->enum('jenis_kelas', ['reguler', 'iup']);
-            $table->string('kelas'); 
-            $table->integer('sks'); 
+            $table->id();
+            $table->string('prodi');
+            $table->string('mata_kuliah');
+            $table->string('jenis_mata_kuliah');
+            $table->string('jenis_pertemuan');
+            $table->string('jenis_kelas');
+            $table->string('kelas');
+            $table->integer('sks');
             $table->integer('semester');
             $table->string('ruang_kuliah');
-            $table->string('hari');
             $table->string('dosen_pengampu');
             $table->string('koordinator')->nullable();
-            $table->time('mulai'); 
-            $table->time('selesai'); 
-            $table->integer('kuota'); 
+            $table->string('hari');
+            $table->time('mulai');
+            $table->time('selesai');
+            $table->integer('kuota');
             $table->string('kurikulum');
-            $table->rememberToken();
+            $table->unsignedTinyInteger('status')->default(0); // Default status tanpa after()
             $table->timestamps();
         });
     }

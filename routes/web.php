@@ -7,6 +7,7 @@ use App\Http\Controllers\RuangController;
 use App\Http\Controllers\PembimbingAkademikController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\MataKuliahController;
 
 
 Route::get('/', function () {
@@ -109,30 +110,69 @@ Route::get('/bagianakademik/aturprodi', function () {
 
 });
 
-//kaprodi
-Route::get('kaprodi/dashboard', [HomeController::class, 'kaprodiDashboard'])
-    ->middleware(['auth', 'kaprodi'])
-    ->name('kaprodi.dashboard');
+//kaprodi yg udah bener
+    
 
-    Route::get('kaprodi/perkuliahan', function () {
-        return view('kaprodi/perkuliahan');
-    });
+Route::get('kaprodi/perkuliahan', function () {
+    return view('kaprodi/perkuliahan');
+});
 
 Route::get('kaprodi/jadwal', function () {
     return view('kaprodi/jadwal');
 });
+
+Route::get('kaprodi/pilihprodi', function () {
+    return view('kaprodi/pilihprodi');
+});
+
+
+Route::get('kaprodi/lihatjadwal', [JadwalController::class, 'index'])->name('jadwal.index');
+
+// Route::get('kaprodi/buatjadwalbaru', [JadwalController::class, 'tampilkan'])->name('jadwal.tampilkan');
     
+
 Route::get('kaprodi/buatjadwalbaru', function () {
     return view('kaprodi/buatjadwalbaru');
 });
-    
-Route::get('kaprodi/formjadwal', function () {
-    return view('kaprodi/formjadwal');
+
+Route::get('kaprodi/kelolamatkul', function () {
+    return view('kaprodi/kelolamatkul');
 });
 
-Route::get('kaprodi/createjadwal', [JadwalController::class, 'create'])->name('createjadwal');
+Route::get('/prodi/{namaProdi}/jadwal', [JadwalController::class, 'jadwal']);
 
-Route::post('kaprodi/storejadwal', [JadwalController::class, 'store'])->name('storejadwal');
+//Route::get('/prodi/{prodi}/jadwal', [JadwalController::class, 'getJadwal'])->name('jadwal.get');
+
+Route::get('kaprodi/dashboard', [HomeController::class, 'kaprodiDashboard'])
+    ->middleware(['auth', 'kaprodi'])
+    ->name('kaprodi.dashboard');
+
+Route::get('/kaprodi/buatjadwalbaru', [JadwalController::class, 'createjadwal'])
+->name('kaprodi.buatjadwalbaru');
+
+Route::post('/kaprodi/buatjadwalbaru/store', [JadwalController::class, 'store'])
+    ->name('kaprodi.buatjadwalbaru.store');
+
+Route::get('/kaprodi/kelolamatkul', [MataKuliahController::class, 'create'])
+    ->name('kaprodi.kelolamatkul');
+
+Route::post('/kaprodi/kelolamatkul/store', [MataKuliahController::class, 'store'])
+    ->name('kaprodi.kelolamatkul.store');
+
+Route::get('kaprodi/kelolamatkul/edit/{kodemk}', [MataKuliahController::class, 'edit'])
+    ->name('kaprodi.kelolamatkul.edit');
+
+Route::post('kaprodi/kelolamatkul/update/{kodemk}', [MataKuliahController::class, 'update'])
+->name('kaprodi.kelolamatkul.update');
+
+Route::delete('/kaprodi/kelolamatkul/destroy/{kodemk}', [MataKuliahController::class, 'destroy'])
+->name('kaprodi.kelolamatkul.destroy');
+
+Route::get('/kaprodi/kelolamatkul/index', [MataKuliahController::class, 'index'])
+->name('kaprodi.kelolamatkul.index');
+
+//Route::resource('matkul', MataKuliahController::class);
+
 
 //pa
 Route::middleware(['auth', 'pembimbingakademik'])->group(function () {
