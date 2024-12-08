@@ -25,7 +25,7 @@ return new class extends Migration
             $table->time('mulai'); 
             $table->time('selesai'); 
             $table->string('hari'); 
-            $table->enum('status', ['pending', 'disetujui', 'ditolak'])->nullable();;
+            $table->enum('status', ['pending', 'disetujui'])->nullable();;
             $table->date('tanggal_pengajuan')->nullable(); 
             $table->date('tanggal_persetujuan')->nullable(); 
 

@@ -81,87 +81,93 @@
                 <a href="/pembimbingakademik/halamanirsmhs" id="link-irs" class="flex-1 text-center border-b-2 border-white pb-2" >IRS</a>
                 <a href="/pembimbingakademik/halamankhsmhs" id="link-khs" class="flex-1 text-center text-gray-400" >KHS</a>
                 <a href="/pembimbingakademik/halamantranskripmhs" id="link-transkrip" class="flex-1 text-center text-gray-400">Transkrip</a>
-
                 </div>
                 <div>
                     <h2 class="text-xl font-semibold mb-4">Isian Rencana Semester (IRS)</h2>
                     <ul class="space-y-4">
-                        <!-- Accordion Item 1 -->
-                        <li class="border-b border-gray-600 pb-2">
-                        @foreach ($dataIRS->groupBy('semester') as $semester => $irsItems)
-                            @if ($semester > 0)
+                        @php
+                            $smtnow = $mhs->semester;
+                            $allSemesters = range(1, $smtnow);
+                        @endphp
+                        @foreach ($allSemesters as $semester)
                             <li class="border-b border-gray-600 pb-2">
                                 <button class="accordion-toggle flex justify-between w-full text-left" onclick="toggleAccordion(this)">
                                     <span>Semester - {{ $semester }}</span>
                                     <span class="accordion-icon">+</span>
                                 </button>
-                            <div class="accordion-content mt-2 hidden text-gray-400">
-                                <div class="flex justify-center items-center">
-                                <div class="text-lg font-bold mb-4 text-white">
-                                        @if($statusIRS == 'pending')
-                                            IRS MAHASISWA (BELUM DISETUJUI WALI)
-                                        @else
-                                            IRS MAHASISWA (SUDAH DISETUJUI WALI)
-                                        @endif
-                                    </div>
+                                <div class="accordion-content mt-2 hidden text-gray-400">
+                                    @if ($dataIRS->where('semester', $semester)->count() > 0)
+                                        <div class="flex justify-center items-center">
+                                            <div class="text-lg font-bold mb-4 text-white">
+                                                @if($statusIRS == 'pending')
+                                                    IRS MAHASISWA (BELUM DISETUJUI WALI)
+                                                @else
+                                                    IRS MAHASISWA (SUDAH DISETUJUI WALI)
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <table class="w-full text-sm text-center text-white">
+                                            <thead class="text-xs uppercase bg-gray-800 text-white">
+                                                <tr>
+                                                    <th scope="col" class="py-3 px-6">NO</th>
+                                                    <th scope="col" class="py-3 px-6">KODE MK</th>
+                                                    <th scope="col" class="py-3 px-6">WAKTU</th>
+                                                    <th scope="col" class="py-3 px-6">MATA KULIAH</th>
+                                                    <th scope="col" class="py-3 px-6">KELAS</th>
+                                                    <th scope="col" class="py-3 px-6">SKS</th>
+                                                    <th scope="col" class="py-3 px-6">DOSEN PENGAMPU</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($dataIRS->where('semester', $semester) as $index => $item)
+                                                    <tr class="bg-gray-700 border-b border-gray-600 hover:bg-gray-600">
+                                                        <td class="py-4 px-6">{{ $index + 1 }}</td>
+                                                        <td class="py-4 px-6">{{ $item->kodemk }}</td>
+                                                        <td class="py-4 px-6">{{ $item->hari}}, {{ $item->mulai}}-{{ $item->selesai}}</td>
+                                                        <td class="py-4 px-6">{{ $item->namamk }}</td>
+                                                        <td class="py-4 px-6">{{ $item->kelas }}</td>
+                                                        <td class="py-4 px-6">{{ $item->sks }}</td>
+                                                        <td class="text-left py-4 px-6">{{ $item->jadwal->dosen_pengampu ?? '-' }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                        <div class="flex justify-center space-x-4 mt-6">
+                                            <button class="bg-green-500 text-white px-4 py-2 rounded-full" onclick="showConfirmationModal()">Setujui IRS</button>
+                                            <button class="bg-yellow-500 text-white px-4 py-2 rounded-full">Berikan Izin Melakukan Perubahan IRS</button>
+                                        </div>
+                                    @else
+                                        <div class="text-center py-4">
+                                            <p>Tidak ada data IRS untuk semester {{ $semester }}</p>
+                                        </div>
+                                    @endif
                                 </div>
-                                <table class="w-full text-sm text-center text-white">
-                                    <thead class="text-xs uppercase bg-gray-800 text-white">
-                                        <tr>
-                                            <th scope="col" class="py-3 px-6">NO</th>
-                                            <th scope="col" class="py-3 px-6">KODE MK</th>
-                                            <th scope="col" class="py-3 px-6">WAKTU</th>
-                                            <th scope="col" class="py-3 px-6">MATA KULIAH</th>
-                                            <th scope="col" class="py-3 px-6">KELAS</th>
-                                            <th scope="col" class="py-3 px-6">SKS</th>
-                                            <th scope="col" class="py-3 px-6">DOSEN PENGAMPU</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach ($irsItems as $index => $item)
-                                        <tr class="bg-gray-700 border-b border-gray-600 hover:bg-gray-600">
-                                            <td class="py-4 px-6">{{ $index + 1 }}</td>
-                                            <td class="py-4 px-6">{{ $item->kodemk }}</td>
-                                            <td class="py-4 px-6">{{ $item->jadwal->hari}}, {{ $item->jadwal->mulai}}-{{ $item->jadwal->selesai}}</td>
-                                            <td class="py-4 px-6">{{ $item->namamk }}</td>
-                                            <td class="py-4 px-6">{{ $item->kelas }}</td>
-                                            <td class="py-4 px-6">{{ $item->sks }}</td>
-                                            <td class="text-left py-4 px-6">{{ $item->jadwal->dosen_pengampu ?? '-' }}</td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                                <div class="flex justify-center space-x-4 mt-6">
-                                    <button class="bg-green-500 text-white px-4 py-2 rounded-full" onclick="showConfirmationModal()">Setujui IRS</button>
-                                    <button class="bg-yellow-500 text-white px-4 py-2 rounded-full">Berikan Izin Melakukan Perubahan IRS</button>
-                                </div>
-                            </div>
-                        </li>
-                        @endif
-                    @endforeach
-                            <!-- Modal Konfirmasi -->
-                        <div id="confirmationModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                            <div class="bg-white text-black p-6 rounded-lg w-1/3">
-                                <h2 class="text-xl font-bold mb-4">Konfirmasi</h2>
-                                <p class="mb-4">Apakah Anda yakin ingin menyetujui IRS ini?</p>
-                                <div class="flex justify-between">
-                                    <button class="bg-red-500 text-white px-4 py-2 rounded-full" onclick="hideConfirmationModal()">Batal</button>
-                                    @foreach ($dataIRS->groupBy('semester') as $semester => $irsInSemester)
-                                        <form action="{{ route('pembimbingakademik.approveIrs', $semester) }}" method="POST" class="inline-block">
-                                            @csrf
-                                            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-full">
-                                                Setujui
-                                            </button>
-                                        </form>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
+                    <div id="confirmationModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                        <div class="bg-white text-black p-6 rounded-lg w-1/3">
+                            <h2 class="text-xl font-bold mb-4">Konfirmasi</h2>
+                            <p class="mb-4">Apakah Anda yakin ingin menyetujui IRS ini?</p>
+                            <div class="flex justify-between">
+                                <button class="bg-red-500 text-white px-4 py-2 rounded-full" onclick="hideConfirmationModal()">Batal</button>
+                                @foreach ($dataIRS->groupBy('semester') as $semester => $irsInSemester)
+                                    <form action="{{ route('pembimbingakademik.approveIrs', $semester) }}" method="POST" class="inline-block">
+                                        @csrf
+                                        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-full">
+                                            Setujui
+                                        </button>
+                                    </form>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </ul>
             </div>
         </div>
     </div>
+</div>
     <script>
         function toggleAccordion(element) {
             const content = element.nextElementSibling;
