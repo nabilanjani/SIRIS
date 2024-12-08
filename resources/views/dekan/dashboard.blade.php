@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<body class="bg-gradient-to-b from-gray-800 to-blue-900 text-white font-sans">
+<body class="bg-gradient-to-b from-blue-900 to-gray-800 text-white font-sans">
     <div class="flex h-screen">
         <!-- Sidebar -->
         <div class="w-1/5 bg-gradient-to-b from-gray-900 to-gray-800 p-6">
