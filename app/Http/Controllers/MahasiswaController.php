@@ -223,12 +223,14 @@ class MahasiswaController extends Controller
 
             // Cek Jadwal Bentrok
             $bentrok = IRS::where('nim', $mahasiswa->nim)
-            ->where('semester', $request->semester)
-            ->whereHas('jadwal', function ($query) use ($jadwal) {
-                $query->where('hari', $jadwal->hari)
-                    ->whereTime('mulai', '<', $jadwal->selesai)
-                    ->whereTime('selesai', '>', $jadwal->mulai);
-            })->first();
+                ->where('semester', $request->semester)
+                ->where('hari', $jadwal->hari)
+                ->where('kodemk', '!=', $request->kodemk) // Hindari mata kuliah yang sama
+                ->where(function ($query) use ($request) {
+                    $query->whereTime('mulai', '<', $request->selesai)
+                        ->whereTime('selesai', '>', $request->mulai);
+                })->first();
+
 
             if ($bentrok) {
                 return redirect()->back()->withErrors(['message' => 'Jadwal mata kuliah bentrok dengan mata kuliah lain.']);
