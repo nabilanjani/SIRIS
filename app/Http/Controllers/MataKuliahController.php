@@ -3,6 +3,7 @@
 namespace App\Http\Controllers; 
  
 use App\Models\MataKuliah; 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request; 
 use Illuminate\Support\Facades\DB; 
  
@@ -26,32 +27,58 @@ class MataKuliahController extends Controller
     } 
  
     public function store(Request $request)
-{
-    // Validasi input dari form
-    $validatedData = $request->validate([
-        'kodeProdi' => 'required|string',
-        'kodemkText' => 'required|string',
-        'namamk' => 'required|string',
-        'sks' => 'required|integer',
-        'semester' => 'required|string',
-    ]);
-
-    // Gabungkan kodeProdi dan kodemkText untuk mendapatkan kodemk
-    $kodemk = $validatedData['kodeProdi'] . $validatedData['kodemkText'];
-
-    // Menyimpan data ke dalam database
-    $mataKuliah = new MataKuliah();
-    $mataKuliah->kodemk = $kodemk;  // Menyimpan gabungan kodeProdi dan kodemkText sebagai kodemk
-    $mataKuliah->namamk = $validatedData['namamk'];
-    $mataKuliah->sks = $validatedData['sks'];
-    $mataKuliah->semester = $validatedData['semester'];
-
-    // Simpan ke database
-    $mataKuliah->save();
-
-    // Redirect atau respons setelah berhasil
-    return redirect()->route('kaprodi.kelolamatkul.index')->with('success', 'Mata kuliah berhasil disimpan!');
-}
+    {
+        try {
+            // Validasi input
+            $validatedData = $request->validate([
+                'kodeProdi' => 'required|string',
+                'kodemkText' => 'required|string',
+                'namamk' => 'required|string',
+                'sks' => 'required|integer',
+                'semester' => 'required|string',
+            ]);
+    
+            // Membuat kode mata kuliah (kodemk)
+            $kodemk = $validatedData['kodeProdi'] . $validatedData['kodemkText'];
+    
+            // Cek apakah kodemk sudah ada di database
+            $existingMatkul = MataKuliah::where('kodemk', $kodemk)->first();
+    
+            if ($existingMatkul) {
+                // Jika sudah ada, kembalikan respons error
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Mata kuliah dengan kode ' . $kodemk . ' sudah ada.'
+                ], 409); // 409 Conflict status code
+            }
+    
+            // Membuat instance MataKuliah baru dan menyimpan data
+            $mataKuliah = new MataKuliah();
+            $mataKuliah->kodemk = $kodemk;
+            $mataKuliah->namamk = $validatedData['namamk'];
+            $mataKuliah->sks = $validatedData['sks'];
+            $mataKuliah->semester = $validatedData['semester'];
+    
+            // Simpan data ke database
+            $mataKuliah->save();
+    
+            // Kembalikan respons sukses
+            return response()->json([
+                'success' => true,
+                'message' => 'Mata kuliah berhasil disimpan!'
+            ]);
+        } catch (\Exception $e) {
+            // Log error untuk debugging
+            Log::error('Mata Kuliah Store Error: ' . $e->getMessage());
+    
+            // Kembalikan respons error jika terjadi pengecualian
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menyimpan mata kuliah: ' . $e->getMessage()
+            ], 500); // Internal Server Error
+        }
+    }
+    
 
 
  
@@ -99,4 +126,14 @@ class MataKuliahController extends Controller
             return redirect()->back()->with('error', 'Gagal menghapus Mata Kuliah: ' . $e->getMessage());
         }
     } 
+
+    public function getTableData()
+{
+    $mata_kuliah = MataKuliah::all(); // Sesuaikan dengan kondisi spesifik Anda
+    $tableHtml = view('components.mata-kuliah-table', compact('mata_kuliah'))->render();
+    
+    return response()->json([
+        'tableHtml' => $tableHtml
+    ]);
+}
 }

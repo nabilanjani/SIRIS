@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Kelola Mata Kuliah</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -111,13 +112,22 @@
 
             <!-- Container Utama -->
             <div id="kelolaForm" class="hidden flex flex-col gap-6 p-6">
-                <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Kelola Mata Kuliah</h1>
+                <div class="flex justify-between items-center mb-4">
+                    <h1 class="text-2xl font-bold">Kelola Mata Kuliah</h1>
+                    <button 
+                        id='kembaliKeProdi' onclick="kembaliKeProdi" 
+                        class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-sm"
+                    >
+                        Kembali ke Pilih Prodi
+                    </button>
+                </div>
+                {{--  <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Kelola Mata Kuliah</h1>  --}}
 
                 <!-- Form dan Tabel Container -->
                 <div class="grid lg:grid-cols-2 gap-6">
                     <!-- Form Kelola Mata Kuliah -->
                     <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
-                        <form action="{{ isset($mataKuliah) ? route('kaprodi.kelolamatkul.update', $mataKuliah->kodemk) : route('kaprodi.kelolamatkul.store') }}" method="POST">
+                        <form id="kelolaMatkulForm" name="kelolaMatkulForm" onsubmit="submitKelolaMatkul(event)" action="{{ isset($mataKuliah) ? route('kaprodi.kelolamatkul.update', $mataKuliah->kodemk) : route('kaprodi.kelolamatkul.store') }}" method="POST">
                             @csrf
                             @if (isset($mataKuliah))
                                 @method('PUT')
@@ -213,7 +223,7 @@
 
                     <!-- Tabel Mata Kuliah -->
                     <div>
-                        <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Daftar Mata Kuliah</h2>
+                        <h1 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Daftar Mata Kuliah</h1>
                         <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
                             <table class="w-full">
                                 <thead class="bg-gray-100 dark:bg-gray-700">
@@ -296,6 +306,7 @@
 </html>
             
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -310,6 +321,20 @@
             'Bioteknologi': 'PABT',
         };
     
+        // Ambil status dari sessionStorage jika ada
+        const isKelolaFormVisible = sessionStorage.getItem('kelolaFormVisible') === 'true';
+        
+        // Jika kelolaForm harus ditampilkan setelah reload
+        if (isKelolaFormVisible) {
+            document.getElementById('prodiSelection').classList.add('hidden');
+            document.getElementById('kelolaForm').classList.remove('hidden');
+        }
+
+        const prodiInput = document.getElementById('prodiInput');
+            if (prodiInput) {
+                prodiInput.value = namaProdi;
+            }
+
         // Event listener for prodi buttons
         document.querySelectorAll('.prodi-button').forEach(button => {
             button.addEventListener('click', function () {
@@ -336,150 +361,91 @@
                 }
             });
         });
+
+        function validateForm(form) {
+            const inputs = form.querySelectorAll('input');
+            let isValid = true;
+        
+            for (let input of inputs) {
+                if (!input.value.trim()) {
+                    console.log(`Input ${input.id || input.name} kosong.`);
+                    input.classList.add('border-red-500'); // Highlight input kosong
+                    isValid = false;
+                } else {
+                    input.classList.remove('border-red-500');
+                }
+            }
+        
+            return isValid;
+        }
+        
     
         // Fungsi untuk submit form kelola mata kuliah
         function submitKelolaMatkul(event) {
             if (event) {
-                event.preventDefault(); // Mencegah form dari submit otomatis
+                event.preventDefault(); // Mencegah submit default
             }
-    
-            const form = document.getElementById('kelolaMatkulForm'); // Pastikan id form benar
-            const formData = new FormData(form);
-    
-            // Validasi form
+        
+            const form = document.getElementById('kelolaMatkulForm');
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // Mencegah form submit default
+                submitKelolaMatkul(event); // Pastikan function submit berjalan dengan benar
+            });
+        
+            // Validasi sederhana
             if (!validateForm(form)) {
                 console.log('Validasi form gagal');
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Validasi Gagal',
-                    text: 'Harap isi semua data dengan benar.',
-                    confirmButtonText: 'OK'
-                });
                 return;
             }
-    
-            // Kirim data ke server menggunakan fetch
-            fetch('{{ isset($mataKuliah) ? route('kaprodi.kelolamatkul.update', $mataKuliah->kodemk) : route('kaprodi.kelolamatkul.store') }}', {
-                method: '{{ isset($mataKuliah) ? "PUT" : "POST" }}',
+        
+            const formData = new FormData(form);
+        
+            fetch('/kaprodi/kelolamatkul/store', {
+                method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 },
                 body: formData,
             })
             .then(response => {
-                // Periksa apakah response adalah sukses
-                if (!response.ok) {
-                    throw new Error('Server response error');
-                }
-                return response.json(); // Ubah response menjadi JSON
+                console.log('Response status:', response.status);
+                return response.json();
             })
             .then(data => {
                 console.log('Response data:', data);
+        
                 if (data.success) {
-                    // Jika berhasil
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil!',
-                        text: data.message || 'Data mata kuliah berhasil disimpan.',
+                        text: data.message,
                         confirmButtonText: 'OK'
                     }).then(() => {
-                        form.reset(); // Reset form setelah berhasil
-                        loadTable(); // Fungsi untuk reload tabel jika diperlukan
+                        toggleForm('kelolaMatkulForm');
+                        loadTable();
+                        form.reset();
+                        {{--  location.reload(); // Reload halaman atau lakukan sesuatu  --}}
                     });
                 } else {
-                    // Jika gagal
                     Swal.fire({
                         icon: 'error',
                         title: 'Gagal!',
-                        text: data.message || 'Terjadi kesalahan saat menyimpan data.',
+                        text: data.message || 'Terjadi kesalahan.',
                         confirmButtonText: 'Coba Lagi'
                     });
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                // Menangani error jika ada masalah di fetch atau server
+        
                 Swal.fire({
                     icon: 'error',
                     title: 'Kesalahan',
-                    text: 'Terjadi kesalahan pada server. Harap coba lagi nanti.',
+                    text: 'Terjadi kesalahan saat mengirim data.',
                     confirmButtonText: 'Tutup'
                 });
             });
         }
-
-        {{--  document.addEventListener('DOMContentLoaded', function() {
-            // Function to open the edit modal
-            window.openEditModal = function(kodemk, nama, sks, semester) {
-                // Get the modal and form elements
-                const modal = document.getElementById('editModal');
-                const form = document.getElementById('editForm');
-                
-                // Populate form fields
-                document.getElementById('kodemk').value = kodemk;
-                document.getElementById('nama').value = nama;
-                document.getElementById('sks').value = sks;
-                document.getElementById('semester').value = semester;
-                
-                // Update form action dynamically
-                form.action = form.action.replace(':kodemk', kodemk);
-                
-                // Show the modal
-                modal.classList.remove('hidden');
-            }
-        
-            // Function to close the edit modal
-            window.closeEditModal = function() {
-                const modal = document.getElementById('editModal');
-                modal.classList.add('hidden');
-                
-                // Reset form and action
-                const form = document.getElementById('editForm');
-                form.reset();
-                form.action = form.action.replace(/\/\d+$/, '/:kodemk');
-            }
-        
-            // Optional: Close modal when clicking outside the modal content
-            document.getElementById('editModal').addEventListener('click', function(event) {
-                if (event.target === this) {
-                    closeEditModal();
-                }
-            });
-        
-            // Optional: Handle form submission with AJAX (recommended for better UX)
-            document.getElementById('editForm').addEventListener('submit', function(event) {
-                event.preventDefault();
-                
-                const form = event.target;
-                const formData = new FormData(form);
-        
-                fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Update the table row or reload the page
-                        alert('Mata Kuliah berhasil diupdate');
-                        location.reload(); // Or update the specific row dynamically
-                    } else {
-                        // Handle errors
-                        alert('Gagal mengupdate Mata Kuliah: ' + (data.message || 'Terjadi kesalahan'));
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Terjadi kesalahan saat mengirim data');
-                })
-                .finally(() => {
-                    closeEditModal();
-                });
-            });
-        });  --}}
 
         // Modal Edit Functionality (moved outside and merged)
     const editModal = document.getElementById('editModal');
@@ -545,7 +511,8 @@
                         text: 'Mata Kuliah berhasil diupdate',
                         confirmButtonText: 'OK'
                     }).then(() => {
-                        location.reload();
+                        loadTable();
+                        closeEditModal();
                     });
                 } else {
                     Swal.fire({
@@ -587,81 +554,34 @@
         if (form) {
             form.addEventListener('submit', submitKelolaMatkul);
         }
-    
-    
-        // Fungsi untuk load tabel mata kuliah (mungkin perlu ditambahkan sesuai kebutuhan)
+
         function loadTable() {
-            // Tambahkan logika untuk me-refresh atau mengambil ulang data tabel jika diperlukan
+            fetch('/kaprodi/kelolamatkul/get-table-data')
+            .then(response => response.json())
+            .then(data => {
+                // Perbarui tabel dengan data baru
+                const tableBody = document.querySelector('tbody');
+                tableBody.innerHTML = data.tableHtml;
+            })
+            .catch(error => {
+                console.error('Error loading table:', error);
+            });
+        }
+    
+        // Tambahkan event listener untuk tombol kembali
+        const kembaliKeProdi = document.getElementById('kembaliKeProdi');
+        if (kembaliKeProdi) {
+            kembaliKeProdi.addEventListener('click', function() {
+                const prodiSelection = document.getElementById('prodiSelection');
+                const kelolaForm = document.getElementById('kelolaForm');
+    
+                if (prodiSelection && kelolaForm) {
+                    prodiSelection.classList.remove('hidden');
+                    kelolaForm.classList.add('hidden');
+                }
+            });
         }
     });
-    
-    {{--  function submitForm(event) {
-        if (event) {
-            event.preventDefault();
-        }
-    
-        const form = document.getElementById('jadwalForm');
-        
-        if (!validateForm()) {
-            console.log('Validasi form gagal');
-            return;
-        }
-    
-        const formData = new FormData(form);
-    
-        fetch('/kaprodi/buatjadwalbaru/store', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            },
-            body: formData,
-        })
-        .then(response => {
-            console.log('Response status:', response.status);
-            return response.json();
-        })
-        .then(data => {
-            console.log('Response data:', data);
-            if (data.success) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: data.message, 
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    toggleForm('jadwalForm');
-                    loadTable();
-                });
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Konflik Jadwal',
-                    text: data.message || 'Gagal menambahkan data.',
-                    confirmButtonText: 'Coba Lagi'
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            
-            // Tangani error khusus untuk konflik jadwal
-            if (error.response && error.response.status === 400) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Konflik Jadwal',
-                    text: 'Maaf, jadwal bertabrakan dengan jadwal yang sudah ada.',
-                    confirmButtonText: 'Tutup'
-                });
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Kesalahan',
-                    text: 'Terjadi kesalahan saat menambahkan data.',
-                    confirmButtonText: 'Tutup'
-                });
-            }
-        });
-    }  --}}
     
 </script>
 
