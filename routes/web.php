@@ -171,6 +171,9 @@ Route::delete('/kaprodi/kelolamatkul/destroy/{kodemk}', [MataKuliahController::c
 Route::get('/kaprodi/kelolamatkul/index', [MataKuliahController::class, 'index'])
 ->name('kaprodi.kelolamatkul.index');
 
+Route::get('/kaprodi/kelolamatkul/get-table-data', [MataKuliahController::class, 'getTableData'])
+->name('kaprodi.kelolamatkul.get-table-data');
+
 //Route::resource('matkul', MataKuliahController::class);
 
 
