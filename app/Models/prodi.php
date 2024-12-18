@@ -8,8 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class prodi extends Model
 {
     use HasFactory;
-    public function mahasiswa()
-    {
-        return $this->hasMany(Mahasiswa::class, 'jurusan', 'nama');
+    protected $table        = "prodi";
+    protected $primaryKey = 'id_prodi';
+    public $timestamps = false;
+    protected $fillable     = ['nama'];
+
+    public function listRuang() {
+        return $this->hasMany(RuangModel::class,'id_prodi', 'id_prodi');
     }
+
+
+
 }

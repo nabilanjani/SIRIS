@@ -71,7 +71,7 @@
                 <div>
                     <h2 class="text-xl font-bold mb-4">Perkuliahan</h2>
                     <div class="grid grid-cols-2 gap-4">
-                        <a href="/bagianakademik/aturprodi" class="bg-orange-500 p-4 rounded-lg relative">
+                        <a href="/bagianakademik/tambahruang" class="bg-orange-500 p-4 rounded-lg relative">
                             <span class="absolute top-2 right-2 text-white"><i class="fas fa-heart"></i></span>
                             <span>Program Studi</span>
                         </a>

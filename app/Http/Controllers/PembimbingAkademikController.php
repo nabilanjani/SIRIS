@@ -42,6 +42,35 @@ class PembimbingAkademikController extends Controller
         if ($request->filled('prodi')) {
             $query->where('jurusan', $request->prodi);
         }
+
+        if ($request->filled('status_irs')) {
+            switch ($request->status_irs) {
+                case 'belum_irs':
+                    $query->whereDoesntHave('irs', 'semester');
+                    break;
+                case 'belum_disetujui':
+                    $query->whereHas('irs', function($q) {
+                        $q->where('status', 'pending');
+                    });
+                    break;
+                case 'sudah_disetujui':
+                    $query->whereHas('irs', function($q) {
+                        $q->where('status', 'disetujui');
+                    });
+                    break;
+            }
+        }
+        $prodi = DB::table('prodi')->select('nama')->get();
+        $counts = [
+            'belum_irs' => Mahasiswa::whereDoesntHave('irs')->count(),
+            'belum_disetujui' => Mahasiswa::whereHas('irs', function($q) {
+                $q->where('status', 'pending');
+            })->count(),
+            'sudah_disetujui' => Mahasiswa::whereHas('irs', function($q) {
+                $q->where('status', 'disetujui');
+            })->count()
+        ];
+
         
         $mahasiswa = $query->get()->map(function($mhs) {
             // Hitung IPS
@@ -72,7 +101,7 @@ class PembimbingAkademikController extends Controller
             return $mhs;
         });
         
-        return view('pembimbingakademik.halamanrevie', compact('user', 'prodi', 'mahasiswa'));
+        return view('pembimbingakademik.halamanrevie', compact('user', 'prodi', 'mahasiswa', 'counts'));
     }
 
     public function resetFilter()

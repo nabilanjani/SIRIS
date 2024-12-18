@@ -9,9 +9,18 @@ class RuangModel extends Model
 {
     use HasFactory;
     protected $table        = "ruang_kuliah";
-    protected $primaryKey   = "id_ruang";
+    protected $primaryKey   = "kode_ruang";
     public $incrementing = false; // Jika kode_ruang bukan auto-increment
     protected $keyType = 'string'; // Jika kode_ruang adalah string
     public $timestamps = false;
-    protected $fillable     = ['id_ruang','kode_ruang','jenis_ruang','kapasitas'];
+    protected $fillable     = ['kode_ruang','kapasitas','id_prodi','status'];
+
+    // Di dalam RuangModel
+    public function programStudi()
+    {
+        return $this->belongsTo(prodi::class, 'id_prodi', 'id_prodi');
+    }
+
+
+
 }

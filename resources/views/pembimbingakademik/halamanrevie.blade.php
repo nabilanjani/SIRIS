@@ -93,6 +93,20 @@
                         <a href="{{ route('pembimbingakademik.resetFilter') }}" class="px-4 py-2 bg-gray-600 rounded text-white">Reset Filter</a>
                     </div>
                 </form>
+                <div class="flex space-x-4 mb-4">
+                    <a href="{{ route('pembimbingakademik.halamanrevie', ['status_irs' => 'belum_irs'] + request()->except('status_irs')) }}" 
+                    class="flex flex-col justify-center items-center bg-red-500 text-white px-4 py-2 rounded">
+                        Belum IRS <br><strong>{{ $counts['belum_irs'] }}</strong>
+                    </a>
+                    <a href="{{ route('pembimbingakademik.halamanrevie', ['status_irs' => 'belum_disetujui'] + request()->except('status_irs')) }}" 
+                    class="flex flex-col justify-center items-center bg-yellow-500 text-white px-4 py-2 rounded">
+                        IRS Belum Disetujui<br><strong>{{ $counts['belum_disetujui'] }}</strong>
+                    </a>
+                    <a href="{{ route('pembimbingakademik.halamanrevie', ['status_irs' => 'sudah_disetujui'] + request()->except('status_irs')) }}" 
+                    class="flex flex-col justify-center items-center bg-green-500 text-white px-4 py-2 rounded">
+                        IRS Sudah Disetujui<br><strong>{{ $counts['sudah_disetujui'] }}</strong>
+                    </a>
+                </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-gray-800 rounded-lg">
                         <thead>
