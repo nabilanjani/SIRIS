@@ -51,40 +51,43 @@ Route::middleware(['auth', 'mahasiswa'])->group(function () {
 });
 
 //dekan
+//Dekan
 Route::get('dekan/dashboard', [HomeController::class, 'dekanDashboard'])
     ->middleware(['auth', 'dekan'])
     ->name('dekan.dashboard');
 
 
-    //Perkuliahan
-    Route::get('dekan/perkuliahan', function () {
-        return view('dekan/perkuliahan'); 
+//Perkuliahan
+Route::get('dekan/perkuliahan', function () {
+    return view('dekan/perkuliahan'); 
 
-    });
-        //ruangkelas
-        Route::get('/dekan/ruangkelas', function () {
-            return view('/dekan/ruangkelas');
-
-        });
-
-        //persetujuan jadwal
-        Route::get('/dekan/persetujuanjadwal', function () {
-            return view('/dekan/persetujuanjadwal');
+});
+Route::prefix('dekan')->group(function () {
+    Route::get('/ruangkelas', [SetujuRuangController::class, 'ruangTampil'])->name('ruang.tampil');
+    Route::get('/filter-ruang', [SetujuRuangController::class, 'showRuangByProdi'])->name('filter.ruang');
+    Route::post('/ruangkelas/update/{id}', [SetujuRuangController::class, 'updateStatus'])->name('ruang.update.status');
+    Route::post('/ruangkelas/updateAllStatus', [SetujuRuangController::class, 'updateAllStatus'])->name('ruang.updateAll');
+    Route::post('/dekan/ruangkelas/cancelAllStatus', [SetujuRuangController::class, 'cancelAllStatus'])->name('ruang.cancel');
 });
 
-Route::get('dekan/perkuliahan', function () {
-    return view('dekan/perkuliahan');
-    });
 
-Route::get('dekan/jadwal', function () {
-    return view('dekan/jadwal');
-    });
+//persetujuan jadwal
 
-Route::get('dekan/lihatjadwal', function () {
-    return view('dekan/lihatjadwal');
-    });
+Route::prefix('dekan')->group(function () {
+    Route::get('/persetujuanjadwal', [DekanJadwalController::class, 'index'])->name('dekan.jadwal.index');
+    Route::get('/jadwal/lihat/{id_prodi}', [DekanJadwalController::class, 'lihatJadwal'])->name('lihatJadwal');
+    Route::post('/jadwal/status/{id}', [DekanJadwalController::class, 'updateStatus'])->name('dekan.jadwal.status');
+    
 
-//bagian akademik
+});
+
+//Lihat jadwal
+Route::prefix('dekan')->group(function () {
+    Route::get('/dekan/jadwal/lihat/{id_prodi}', [LihatJadwalController::class, 'lihatJadwalByProdi'])->name('dekan.lihatjadwal.prodi');
+    Route::post('/lihat-jadwal/filter', [LihatJadwalController::class, 'filterByProdi'])->name('dekan.lihatjadwal.filter');
+});
+
+//Bagian Akademik
 Route::get('bagianakademik/dashboard', [HomeController::class, 'bagianakademikDashboard'])
 ->middleware(['auth', 'bagianakademik'])
 ->name('bagianakademik.dashboard');
@@ -94,21 +97,34 @@ Route::get('bagianakademik/perkuliahanba', function () {
     return view('bagianakademik/perkuliahanba'); 
 });
 
-//atur ruang
+// =============================
+// ATUR RUANG
+
+// Untuk menampilkan data ruang
 Route::get('/bagianakademik/aturruang', [RuangController::class, 'ruangtampil']);
 
+// Untuk menambah ruang
 Route::post('/ruang/tambah', [RuangController::class, 'tambahruang'])->name('ruang.tambah');
+
+// Untuk mengambil data ruang
 Route::get('/ruang/data', [RuangController::class, 'getData'])->name('ruang.data');
-Route::delete('/ruang/hapus/{kode_ruang}', [RuangController::class, 'hapusruang'])->name('ruang.hapus');
+
+// Untuk menghapus ruang
+Route::delete('/ruang/hapus/{kode_ruang}', [RuangController::class, 'hapusRuang'])->name('ruang.hapus');
+
+
+// Untuk mengedit ruang
+// Menyimpan route yang benar
 Route::put('/ruang/edit/{kode_ruang}', [RuangController::class, 'editruang'])->name('ruang.edit');
+
+// Untuk pencarian ruang
 Route::get('/ruang/cari', [RuangController::class, 'cariruang'])->name('ruang.cari');
 
+// =============================
+ 
 
-//atur prodi
-Route::get('/bagianakademik/aturprodi', function () {
-    return view('/bagianakademik/aturprodi');
+//atur ruang
 
-});
 
 //kaprodi yg udah bener
     
@@ -185,10 +201,18 @@ Route::middleware(['auth', 'pembimbingakademik'])->group(function () {
         ->name('pembimbingakademik.perwalian');
     Route::get('/pembimbingakademik/halamanrevie', [PembimbingAkademikController::class, 'halamanrevie'])
         ->name('pembimbingakademik.halamanrevie');
-    Route::get('/pembimbingakademik/halamanirsmhs/{nim}', [PembimbingAkademikController::class, 'halamanIrsMhs'])->name('halamanirsmhs');
+    Route::get('/pembimbingakademik/halamanirsmhs/{nim}', [PembimbingAkademikController::class, 'halamanIrsMhs'])
+        ->name('halamanirsmhs');
     Route::post('/pembimbingakademik/approve-irs/{semester}', [PembimbingAkademikController::class, 'approveIrs'])
         ->name('pembimbingakademik.approveIrs');  
-    Route::get('/reset-filter', [PembimbingAkademikController::class, 'resetFilter'])->name('pembimbingakademik.resetFilter');
+    Route::post('/pembimbingakademik/revoke-approve-irs/{semester}', [PembimbingAkademikController::class, 'revokeApproveIrs'])
+        ->name('pembimbingakademik.revokeApproveIrs');
+    Route::post('/pembimbingakademik/allow-change-irs/{semester}', [PembimbingAkademikController::class, 'allowChangesIrs'])
+        ->name('pembimbingakademik.allowChangesIrs');
+    Route::get('/reset-filter', [PembimbingAkademikController::class, 'resetFilter'])
+        ->name('pembimbingakademik.resetFilter');
+    Route::get('/pembimbingakademik/cetakpdf/{nim}/{semester}', [PembimbingAkademikController::class, 'cetakPdf'])
+        ->name('pembimbingakademik.cetakpdf');
 });
 
 require __DIR__.'/auth.php';

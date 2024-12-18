@@ -99,11 +99,13 @@
                                     @if ($dataIRS->where('semester', $semester)->count() > 0)
                                         <div class="flex justify-center items-center">
                                             <div class="text-lg font-bold mb-4 text-white">
-                                                @if($statusIRS == 'pending')
-                                                    IRS MAHASISWA (BELUM DISETUJUI WALI)
-                                                @else
-                                                    IRS MAHASISWA (SUDAH DISETUJUI WALI)
-                                                @endif
+                                            @if($statusIRS == 'pending')
+                                                IRS MAHASISWA (BELUM DISETUJUI WALI)
+                                            @elseif($statusIRS == 'disetujui')
+                                                IRS MAHASISWA (SUDAH DISETUJUI WALI)
+                                            @else 
+                                                IRS MAHASISWA (DITOLAK WALI)
+                                            @endif
                                             </div>
                                         </div>
                                         <table class="w-full text-sm text-center text-white">
@@ -133,8 +135,26 @@
                                             </tbody>
                                         </table>
                                         <div class="flex justify-center space-x-4 mt-6">
-                                            <button class="bg-green-500 text-white px-4 py-2 rounded-full" onclick="showConfirmationModal()">Setujui IRS</button>
-                                            <button class="bg-yellow-500 text-white px-4 py-2 rounded-full">Berikan Izin Melakukan Perubahan IRS</button>
+                                            <a href="{{ route('pembimbingakademik.cetakpdf', ['nim' => $mhs->nim, 'semester' => $semester]) }}" 
+                                            target="_blank"
+                                            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full transition duration-300">
+                                                <i class="fas fa-print mr-2"></i>Cetak PDF
+                                            </a>
+                                        </div>
+                                        <div class="flex justify-center space-x-4 mt-6">
+                                            @if ($statusIRS == 'pending')
+                                                <button class="bg-green-500 text-white px-4 py-2 rounded-full" onclick="showConfirmationModal('approve')" id="approveButton">Setujui IRS</button>
+                                            @else
+                                                <button class="bg-green-500 text-white px-4 py-2 rounded-full opacity-50" disabled>Setujui IRS</button>
+                                            @endif
+
+                                            @if ($statusIRS == 'disetujui')
+                                                <button class="bg-yellow-500 text-white px-4 py-2 rounded-full" onclick="showConfirmationModal('allow')" id="allowChangesButton">Berikan Izin Melakukan Perubahan IRS</button>
+                                                <button class="bg-red-500 text-white px-4 py-2 rounded-full" onclick="showConfirmationModal('revoke')" id="revokeButton">Batalkan Persetujuan IRS</button>
+                                            @else
+                                                <button class="bg-yellow-500 text-white px-4 py-2 rounded-full opacity-50" disabled>Berikan Izin Melakukan Perubahan IRS</button>
+                                                <button class="bg-red-500 text-white px-4 py-2 rounded-full opacity-50" disabled>Batalkan Persetujuan IRS</button>
+                                            @endif
                                         </div>
                                     @else
                                         <div class="text-center py-4">
@@ -146,28 +166,25 @@
                         @endforeach
                     </ul>
                 </div>
-                    <div id="confirmationModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                        <div class="bg-white text-black p-6 rounded-lg w-1/3">
-                            <h2 class="text-xl font-bold mb-4">Konfirmasi</h2>
-                            <p class="mb-4">Apakah Anda yakin ingin menyetujui IRS ini?</p>
-                            <div class="flex justify-between">
-                                <button class="bg-red-500 text-white px-4 py-2 rounded-full" onclick="hideConfirmationModal()">Batal</button>
-                                @foreach ($dataIRS->groupBy('semester') as $semester => $irsInSemester)
-                                    <form action="{{ route('pembimbingakademik.approveIrs', $semester) }}" method="POST" class="inline-block">
-                                        @csrf
-                                        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-full">
-                                            Setujui
-                                        </button>
-                                    </form>
-                                @endforeach
-                            </div>
+                <!-- Modals -->
+                <div id="confirmationModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                    <div class="bg-white text-black p-6 rounded-lg w-1/3">
+                        <h2 class="text-xl font-bold mb-4">Konfirmasi</h2>
+                        <p id="confirmationMessage" class="mb-4">Apakah Anda yakin ingin menyetujui IRS ini?</p>
+                        <div class="flex justify-between">
+                            <button class="bg-red-500 text-white px-4 py-2 rounded-full" onclick="hideConfirmationModal()">Batal</button>
+                            <form id="confirmationForm" method="POST" class="inline-block">
+                                @csrf
+                                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-full">
+                                    Konfirmasi
+                                </button>
+                            </form>
                         </div>
                     </div>
-                </ul>
+                </div>
             </div>
         </div>
     </div>
-</div>
     <script>
         function toggleAccordion(element) {
             const content = element.nextElementSibling;
@@ -176,12 +193,28 @@
             icon.textContent = content.classList.contains('hidden') ? '+' : '-';
         }
 
-        function showConfirmationModal() {
-            document.getElementById('confirmationModal').classList.remove('hidden');
+        function showConfirmationModal(action) {
+            const modal = document.getElementById('confirmationModal');
+            const message = document.getElementById('confirmationMessage');
+            const form = document.getElementById('confirmationForm');
+
+            if (action === 'approve') {
+                message.textContent = 'Apakah Anda yakin ingin menyetujui IRS ini?';
+                form.action = '{{ route('pembimbingakademik.approveIrs', $semester) }}';
+            } else if (action === 'revoke') {
+                message.textContent = 'Apakah Anda yakin ingin membatalkan persetujuan IRS ini?';
+                form.action = '{{ route('pembimbingakademik.revokeApproveIrs', $semester) }}';
+            } else if (action === 'allow') {
+                message.textContent = 'Apakah Anda yakin ingin memberikan izin perubahan IRS ini?';
+                form.action = '{{ route('pembimbingakademik.allowChangesIrs', ['nim' => $mhs->nim, 'semester' => $semester]) }}';
+            }
+            
+            modal.classList.remove('hidden');
         }
 
         function hideConfirmationModal() {
-            document.getElementById('confirmationModal').classList.add('hidden');
+            const modal = document.getElementById('confirmationModal');
+            modal.classList.add('hidden');
         }
 
         function closeAlert() {

@@ -16,8 +16,8 @@ class JadwalController extends Controller
     public function creatematkul(Request $request)
         {
         // Ambil data mata kuliah untuk dropdown
-        $mata_kuliah = DB::table('mata_kuliah')->select('kodemk', 'namamk')->get();
-
+        $mata_kuliah = MataKuliah::select('kodemk', 'namamk')->get();
+      
         return view('kaprodi.buatjadwalbaru', compact('mata_kuliah'));
         }
 
@@ -88,7 +88,7 @@ class JadwalController extends Controller
         $ruang_kuliah = DB::table('ruang_kuliah')->select('kode_ruang', 'kapasitas')->get();
     
         return view('kaprodi.buatjadwalbaru', [
-            'namamk' => $mata_kuliah,
+            'mata_kuliah' => $mata_kuliah,
             'dosen' => $dosen,
             'ruang_kuliah' => $ruang_kuliah
         ]);
