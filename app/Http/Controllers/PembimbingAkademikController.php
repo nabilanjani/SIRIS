@@ -178,21 +178,18 @@ class PembimbingAkademikController extends Controller
 
     public function cetakPdf($nim, $semester)
     {
-        // Mengambil mahasiswa berdasarkan nim
-        $mahasiswa = Mahasiswa::where('nim', $nim)->first(); // Menggunakan first() karena hanya mengambil satu mahasiswa
+        $mahasiswa = Mahasiswa::where('nim', $nim)->first(); 
         $irs = Irs::where('nim', $nim)
                   ->where('semester', $semester)
                   ->with('jadwal')
-                  ->get(); // Koleksi IRS yang bisa lebih dari satu
+                  ->get(); 
     
-        // Pastikan data berhasil ditemukan
         if ($mahasiswa && $irs->count()) {
-            // Membuat PDF
             $pdf = PDF::loadView('mahasiswa.cetakpdf', compact('mahasiswa', 'irs'));
             $filename = 'Laporan_Mahasiswa_' . $mahasiswa->nim . '.pdf';
-            return $pdf->download($filename); // Download file PDF
+            return $pdf->download($filename); 
         } else {
-            return response()->json(['error' => 'Data tidak ditemukan'], 404); // Jika data tidak ditemukan
+            return response()->json(['error' => 'Data tidak ditemukan'], 404); 
         }
     }
     
