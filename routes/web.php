@@ -201,10 +201,18 @@ Route::middleware(['auth', 'pembimbingakademik'])->group(function () {
         ->name('pembimbingakademik.perwalian');
     Route::get('/pembimbingakademik/halamanrevie', [PembimbingAkademikController::class, 'halamanrevie'])
         ->name('pembimbingakademik.halamanrevie');
-    Route::get('/pembimbingakademik/halamanirsmhs/{nim}', [PembimbingAkademikController::class, 'halamanIrsMhs'])->name('halamanirsmhs');
+    Route::get('/pembimbingakademik/halamanirsmhs/{nim}', [PembimbingAkademikController::class, 'halamanIrsMhs'])
+        ->name('halamanirsmhs');
     Route::post('/pembimbingakademik/approve-irs/{semester}', [PembimbingAkademikController::class, 'approveIrs'])
         ->name('pembimbingakademik.approveIrs');  
-    Route::get('/reset-filter', [PembimbingAkademikController::class, 'resetFilter'])->name('pembimbingakademik.resetFilter');
+    Route::post('/pembimbingakademik/revoke-approve-irs/{semester}', [PembimbingAkademikController::class, 'revokeApproveIrs'])
+        ->name('pembimbingakademik.revokeApproveIrs');
+    Route::post('/pembimbingakademik/allow-change-irs/{semester}', [PembimbingAkademikController::class, 'allowChangesIrs'])
+        ->name('pembimbingakademik.allowChangesIrs');
+    Route::get('/reset-filter', [PembimbingAkademikController::class, 'resetFilter'])
+        ->name('pembimbingakademik.resetFilter');
+    Route::get('/pembimbingakademik/cetakpdf/{nim}/{semester}', [PembimbingAkademikController::class, 'cetakPdf'])
+        ->name('pembimbingakademik.cetakpdf');
 });
 
 require __DIR__.'/auth.php';

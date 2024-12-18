@@ -9,6 +9,7 @@ use App\Models\prodi;
 use App\Models\User;
 use App\Models\Mahasiswa;
 use App\Models\IRS;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PembimbingAkademikController extends Controller
 {
@@ -134,4 +135,65 @@ class PembimbingAkademikController extends Controller
 
         return redirect()->back()->with('success', 'IRS semester ' . $semester . ' berhasil disetujui.');
     }
+
+    public function allowChangesIrs(Request $request, $semester)
+    {
+        $irs = IRS::where('nim', $request->nim)
+                ->where('semester', $semester)
+                ->first();
+
+        if ($irs) {
+            $irs->status = 'allow_changes'; 
+            $irs->save();
+        }
+
+        return redirect()->route('pembimbingakademik.halamanIrsMhs', ['nim' => $request->nim])
+                        ->with('success', 'IRS berhasil diberikan izin perubahan.');
+    }
+
+    public function revokeApproveIrs(Request $request, $semester)
+    {
+        $irs = IRS::where('semester', $semester)->first();
+
+        if (!$irs) {
+            return redirect()->back()->with('error', 'IRS semester ' . $semester . ' tidak ditemukan.');
+        }
+        $newStatus = $request->input('status', 'ditolak');
+
+        if (!in_array($newStatus, ['pending', 'ditolak'])) {
+            return redirect()->back()->with('error', 'Status yang diberikan tidak valid.');
+        }
+
+        $irs->update([
+            'status' => $newStatus,
+            'tanggal_persetujuan' => null, 
+        ]);
+
+        $message = $newStatus === 'pending'
+            ? 'Mahasiswa diizinkan untuk mengubah IRS semester ' . $semester . '.'
+            : 'Persetujuan IRS semester ' . $semester . ' berhasil dibatalkan. Mahasiswa tidak dapat mengubah IRS.';
+
+        return redirect()->back()->with('success', $message);
+    }
+
+    public function cetakPdf($nim, $semester)
+    {
+        // Mengambil mahasiswa berdasarkan nim
+        $mahasiswa = Mahasiswa::where('nim', $nim)->first(); // Menggunakan first() karena hanya mengambil satu mahasiswa
+        $irs = Irs::where('nim', $nim)
+                  ->where('semester', $semester)
+                  ->with('jadwal')
+                  ->get(); // Koleksi IRS yang bisa lebih dari satu
+    
+        // Pastikan data berhasil ditemukan
+        if ($mahasiswa && $irs->count()) {
+            // Membuat PDF
+            $pdf = PDF::loadView('mahasiswa.cetakpdf', compact('mahasiswa', 'irs'));
+            $filename = 'Laporan_Mahasiswa_' . $mahasiswa->nim . '.pdf';
+            return $pdf->download($filename); // Download file PDF
+        } else {
+            return response()->json(['error' => 'Data tidak ditemukan'], 404); // Jika data tidak ditemukan
+        }
+    }
+    
 }
