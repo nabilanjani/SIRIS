@@ -34,6 +34,9 @@
                             <h3 class="text-lg font-semibold text-white">
                                 Semester {{ $irs->first()->semester ?? '-' }}
                             </h3>
+                            <h3 class="text-lg font-semibold text-white">
+                                Status IRS {{ $irs->first()->status }}
+                            </h3>
                         </div>
 
                         <!-- Tabel IRS -->
